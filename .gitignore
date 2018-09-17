@@ -57,7 +57,7 @@ archive
 
 #Datasets
 *.csv
-*json
+#*json
 *tsv 
 *.tgz
 cleaned

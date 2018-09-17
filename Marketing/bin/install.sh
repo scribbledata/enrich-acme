@@ -1,6 +1,8 @@
 #!/bin/bash 
 
+echo "###############################"
 echo "Installing Acme Datasets" 
+echo "###############################"
 
 if [ -z "$ENRICH_ROOT" ];
 then
@@ -16,10 +18,10 @@ TEST_SHARED="$ENRICH_TEST/shared/acme"
 mkdir -p $SHARED
 mkdir -p $TEST_SHARED
 URL="https://raw.githubusercontent.com/irJERAD/Intro-to-Data-Science-in-Python/master/MyNotebooks/cars.csv"
-wget $URL -O $SHARED/usedcars.csv
-wget $URL -O $TEST_SHARED/usedcars.csv
+wget -q $URL -O $SHARED/usedcars.csv
+wget -q $URL -O $TEST_SHARED/usedcars.csv
 
-echo "Downloaded usedcars dataset into "
+echo -e "\nDownloaded usedcars dataset into "
 echo "   (1) $SHARED"
 echo "   (2) $TEST_SHARED" 
 
