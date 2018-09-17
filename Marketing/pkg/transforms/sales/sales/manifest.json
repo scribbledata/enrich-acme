@@ -1,0 +1,9 @@
+{
+    "name": "CarSales",
+    "description": "Extract sales information",
+    "version": 1.0, 
+    "minorversion": 1.0,
+    "author": "John Smith",
+    "tags": ["tag1", "tag2"],
+    "files": ["__init__.py", "file2", "file3"]
+}

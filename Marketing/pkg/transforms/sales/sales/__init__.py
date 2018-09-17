@@ -1,5 +1,6 @@
 import os
 import sys
+import random 
 import numpy as np 
 import pandas as pd 
 from enrichsdk import Compute, S3Mixin
@@ -8,34 +9,24 @@ import logging
 
 logger = logging.getLogger("app") 
 
-class MyCarModel(Compute, S3Mixin): 
+class MySalesModel(Compute, S3Mixin): 
 
     def __init__(self, *args, **kwargs): 
-        super(MyCarModel,self).__init__(*args, **kwargs) 
-        self.name = "CarModel" 
+        super(MySalesModel,self).__init__(*args, **kwargs) 
+        self.name = "CarSales" 
         self.outputs = { 
-            "cars": { 
-                "Sales": "Actual and sythetic data" 
-	    }		   
         }		   
         self.dependencies = { 
-            "sales": "CarSales"
 	}
 
         self.testdata = { 
 	    'conf': {
 	        'args': {
-                    'usedcars': "%(data_root)s/shared/acme/usedcars.csv" 
+                    'sales': "%(data_root)s/shared/acme/carsales.csv",
+                    'cars': "%(data_root)s/shared/acme/usedcars.csv"
 		}
 	    },
             'data': { 
-                "sales": {
-                    "transform": "CarSales",
-                    "filename": "sales.csv",
-                    "params": {
-                        "sep": ","
-                    }
-                }
             }
         }
     def process(self, state): 
@@ -54,29 +45,47 @@ class MyCarModel(Compute, S3Mixin):
         # missing in the underlying dataframe (e.g., pandas)
         framemgr = self.config.get_dataframe('pandas') 
 
-        carspath = self.args['usedcars'] 
+        salespath = self.args['sales'] 
+        salespath = self.config.get_file(salespath) 
+        salesdf = pd.read_csv(salespath) 
+
+        # Cleanup values 
+        for c in ['Manufacturer', 'Model']:
+            salesdf.loc[:,c] = salesdf[c].apply(lambda s: s.strip().upper())
+        # Rename columns 
+        salesdf = salesdf.rename(columns={
+            'Manufacturer': "Make",
+            'Sales ': "Sales" 
+        })
+
+        # Collect only a subset...
+        salesdf = salesdf[['Make', 'Model', 'Sales']]
+
+        # Randomly choose subset of makes from the usedcars
+        carspath = self.args['cars'] 
         carspath = self.config.get_file(carspath) 
-        carsdf = pd.read_csv(carspath) 
-        salesdf = state.get_frame('sales')['df'] 
+        carsdf = pd.read_csv(carspath)         
+        carsdf = carsdf[['Make', 'Model']]
+        carsdf.loc[:,'Sales'] = carsdf.apply(lambda r: round(random.random()*100,2), 
+                                             axis=1)
 
-        carsdf = carsdf.merge(salesdf,
-                              how='left',
-                              on=['Make', 'Model'])
-
+        # Append the synthetic numbers to the sales data 
+        salesdf = salesdf.append(carsdf)
+        
         ###############################################
         # => Update state 
         ###############################################
         columns = {} 
-        for c in list(carsdf.columns): 
+        for c in list(salesdf.columns): 
             columns[c] = { 
                 'touch': self.name, # Who is introducing this column
-                'datatype': framemgr.get_generic_dtype(carsdf, c), # What is its type 
-                'description': self.get_column_description('cars', c) # text associated with this column 
+                'datatype': framemgr.get_generic_dtype(salesdf, c), # What is its type 
+                'description': self.get_column_description('sales', c) # text associated with this column 
             } 
 
         # => Gather the update parameters 
         updated_detail = { 
-            'df': carsdf, 
+            'df': salesdf, 
             'transform': self.name,
             'frametype': 'pandas', 
             'params': [
@@ -89,13 +98,13 @@ class MyCarModel(Compute, S3Mixin):
                 # Add a log entry describing the change 
                 {
                     'transform': self.name, 
-                    'log': 'Simply loaded cars' 
+                    'log': 'Sales data cleaned' 
                 }
             ]
         }
 
         # Update the state. 
-        state.update_frame('cars', updated_detail, create=True) 
+        state.update_frame('sales', updated_detail, create=True) 
         
         # Do the same thing for the second update dataframe
 
@@ -114,8 +123,8 @@ class MyCarModel(Compute, S3Mixin):
         ####################################################
         # => Output Dataframe 1 
         ####################################################
-        name = 'cars'
+        name = 'sales'
         if not state.reached_stage(name, self.name): 
             raise Exception("Could not find new frame created for {}".format(name))
             
-provider = MyCarModel 
+provider = MySalesModel 

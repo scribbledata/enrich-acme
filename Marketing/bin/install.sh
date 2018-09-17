@@ -21,7 +21,11 @@ URL="https://raw.githubusercontent.com/irJERAD/Intro-to-Data-Science-in-Python/m
 wget -q $URL -O $SHARED/usedcars.csv
 wget -q $URL -O $TEST_SHARED/usedcars.csv
 
-echo -e "\nDownloaded usedcars dataset into "
+URL="https://communities.sas.com/kntur85557/attachments/kntur85557/programming/113336/1/Car%20sales.csv"
+wget -q $URL -O $SHARED/carsales.csv
+wget -q $URL -O $TEST_SHARED/carsales.csv
+
+echo -e "\nDownloaded usedcars and car sales dataset into "
 echo "   (1) $SHARED"
 echo "   (2) $TEST_SHARED" 
 

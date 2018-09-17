@@ -1,13 +1,5 @@
  {
-       "org": {
-           "customer": "acme",
-           "name": "Acme Inc",
-           "description": "Acme retail corporation", 
-           "logo": "/static/images/acme/logo.png"
-       },
-       "repository": { 
-           "author": "John Smith", 
-           "email": "john.smith@acme.com", 
-           "giturl": "https://github.com/acme/enrich-acme.git" 
-       }
+     "name": "acme",
+     "description": "Acme retail corporation", 
+     "logo": "/static/images/acme/logo.png"
 }
