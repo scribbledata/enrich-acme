@@ -3,7 +3,7 @@
          "customer": "acme",
          "name": "Marketing",
          "description": "Acme retail corporation", 
-         "logo": "/static/images/acme/logo.png"
+         "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Acme-logo.png/800px-Acme-logo.png"
      },
      "repository": { 
          "author": "John Smith", 
