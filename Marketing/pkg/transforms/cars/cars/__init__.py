@@ -82,7 +82,10 @@ class MyCarModel(Compute, S3Mixin):
             'params': [
                 {
                     'type': 'compute',
-                    'columns': columns 
+                    'columns': columns,
+                    'notes': [
+                        'Sales numbers are fictious' 
+                    ]
                 }
             ], 
             'history': [
@@ -96,9 +99,10 @@ class MyCarModel(Compute, S3Mixin):
 
         # Update the state. 
         state.update_frame('cars', updated_detail, create=True) 
-        
-        # Do the same thing for the second update dataframe
 
+        # Include message in notifications 
+        state.make_note("A very important message")
+        
         ###########################################
         # => Return 
         ###########################################
