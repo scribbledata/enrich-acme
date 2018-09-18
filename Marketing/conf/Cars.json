@@ -10,7 +10,8 @@
 	"libraries": ["%(customer_root)s/transforms",
 		      "%(customer_root)s/skins"], 
 	"packages": [
-	    "%(customer_root)s/pkg"
+	    "%(customer_root)s/pkg",
+	    "%(enrich_customers_dir)s/scribble/Contrib/pkg"
 	]
     },
     "notification": {
@@ -38,7 +39,22 @@
 	        "args": {
                     "usedcars": "%(data_root)s/shared/acme/usedcars.csv"		    
 		}
-	    }
+	    },
+	    {
+		"transform": "TableSink",
+		"dependencies": {
+		    "cars": "CarModel"
+		},
+		"args": {
+		    "cars": {
+			"frametype": "pandas",
+			"filename": "%(output)s/%(runid)s/cars.csv", 
+			"params": {
+			    "sep": ","
+			} 
+		    }
+		}
+	    }	    
 	]
     },
     "skins": []    
