@@ -63,6 +63,13 @@ class MyCarModel(Compute, S3Mixin):
                               how='left',
                               on=['Make', 'Model'])
 
+        state.make_note("Checking this one..")
+        
+        state.make_performance_note(name="cars_dropped",
+                                    description="Check if count of dropped cars is within threshold (10)",
+                                    condition=len(carsdf) < 10,
+                                    message="Call operations to reduce car count") 
+                               
         ###############################################
         # => Update state 
         ###############################################
