@@ -1,0 +1,13 @@
+{
+    "org": {
+        "customer": "acme",
+        "name": "Lending",
+        "description": "Lending Features",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Acme-logo.png/800px-Acme-logo.png"
+    },
+    "repository": {
+        "author": "Venkata Pingali",
+        "email": "pingali@scribbledata.io",
+        "giturl": "https://github.com/pingali/enrich-acme"
+    }
+}
