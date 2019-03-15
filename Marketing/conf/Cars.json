@@ -1,0 +1,61 @@
+{
+    "name": "CarAnalyze",
+    "description": "Analyze Used cars ",
+    "customer_root": "%(enrich_customers_dir)s/acme/Marketing", 
+    "data_root": "%(enrich_data_dir)s/acme/Marketing", 
+    "runid": "carrun-%Y%m%d-%H%M%S",
+    "output": "%(data_root)s/output/%(name)s", 
+    "log": "%(output)s/%(runid)s/log.json", 
+    "paths": { 
+	"libraries": ["%(customer_root)s/transforms",
+		      "%(customer_root)s/skins"], 
+	"packages": [
+	    "%(customer_root)s/pkg",
+	    "%(enrich_customers_dir)s/scribble/Contrib/pkg"
+	]
+    },
+    "notification": {
+	"enable": true,
+	"email": [
+	     "john@acme.com"
+	]	
+    },
+    "transforms": {
+	"enabled": [
+	    { 
+		"transform": "CarSales",
+		"enable": true,
+	        "args": {
+                    "sales": "%(data_root)s/shared/acme/carsales.csv",
+                    "cars": "%(data_root)s/shared/acme/usedcars.csv"
+		}
+	    },	    
+	    { 
+		"transform": "CarModel",
+		"enable": true,
+                "dependencies": {
+		    "sales": "CarSales"
+                },
+	        "args": {
+                    "usedcars": "%(data_root)s/shared/acme/usedcars.csv"		    
+		}
+	    },
+	    {
+		"transform": "TableSink",
+		"dependencies": {
+		    "cars": "CarModel"
+		},
+		"args": {
+		    "cars": {
+			"frametype": "pandas",
+			"filename": "%(output)s/%(runid)s/cars.csv", 
+			"params": {
+			    "sep": ","
+			} 
+		    }
+		}
+	    }	    
+	]
+    },
+    "skins": []    
+}

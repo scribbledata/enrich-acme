@@ -1,0 +1,13 @@
+ {
+     "org": {
+         "customer": "acme",
+         "name": "Marketing",
+         "description": "Acme retail corporation marketing team", 
+         "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Acme-logo.png/800px-Acme-logo.png"
+     },
+     "repository": { 
+         "author": "John Smith", 
+         "email": "john.smith@acme.com", 
+           "giturl": "https://github.com/acme/enrich-acme.git" 
+     }
+}

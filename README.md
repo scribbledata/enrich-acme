@@ -1,3 +1,3 @@
-# enrich-acme
+# Acme Inc 
 
-See tutorial branch
+Enrich pipeline code repository

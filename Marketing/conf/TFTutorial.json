@@ -1,0 +1,33 @@
+{
+    "name": "TFTutorial",
+    "description": "Run simple TensorFlow example",
+    "customer_root": "%(enrich_customers_dir)s/acme/Marketing", 
+    "data_root": "%(enrich_data_dir)s/acme/Marketing", 
+    "runid": "tensorflow-%Y%m%d-%H%M%S",
+    "output": "%(data_root)s/output/%(name)s", 
+    "log": "%(output)s/%(runid)s/log.json", 
+    "paths": { 
+	"libraries": ["%(customer_root)s/transforms",
+		      "%(customer_root)s/skins"], 
+	"packages": [
+	    "%(customer_root)s/pkg"
+	]
+    },
+    "notification": {
+	"enable": true,
+	"email": [
+	     "john@acme.com"
+	]	
+    },
+    "transforms": {
+	"enabled": [
+	    { 
+		"transform": "TFTutorial",
+		"enable": true,
+	        "args": {
+		}
+	    }
+	]
+    },
+    "skins": []    
+}
