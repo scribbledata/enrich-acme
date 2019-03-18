@@ -5,7 +5,7 @@ config = {
     "data_root": "%(enrich_data_dir)s/acme/Lending", 
     "runid": "lending_analysis-%Y%m%d-%H%M%S",
     "output": "%(data_root)s/output/%(name)s", 
-    "doc": "%(customer_root)s/docs/test.md",     
+    "doc": "%(customer_root)s/docs/loan.md",     
     "log": "%(output)s/%(runid)s/log.json", 
     "imports": [
     ],
