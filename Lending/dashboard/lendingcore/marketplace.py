@@ -11,9 +11,7 @@ dbs = [
 
 # Collect other sources...
 sources = {
-    "cars": "$ENRICH_DATA/scribble/Contrib/shared/cars/cars.pickle",
-    "sensor_features": "$ENRICH_DATA/tibil/Curve10/shared/campaigns/sensor_features.pickle",
-    "annotated_sensor_input": "$ENRICH_DATA/tibil/Curve10/shared/campaigns/annotated_sensor_input.pickle" 
+    "loan": "$ENRICH_DATA/acme/Lending/shared/campaigns/loan_features.pickle",
 }
 
 for dbname, picklepath in sources.items():

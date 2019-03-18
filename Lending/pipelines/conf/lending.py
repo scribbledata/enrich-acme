@@ -37,10 +37,22 @@ config = {
 		}
 	    },
             {
+                "transform": "DataFrameProfiler",
+                "dependencies": {
+                    "loan_features": "RiskFeatures"
+                },
+                "args": {
+                    "frames": ["loan_features"],
+                    "html": "%(output)s/%(runid)s/viz/%(frame)s.html",
+                    "pickle": "%(output)s/%(runid)s/viz/%(frame)s.pickle"
+                }
+            },            
+            {
 		"transform": "TableSink",
 		"enable": True,
                 "dependencies": {
-                    "lending_source": "RiskFeatures" 
+                    "lending_source": "RiskFeatures",
+                    "loan_features": "RiskFeatures"
                 },
 	        "args": {
                     "lending_source": { 
@@ -58,7 +70,23 @@ config = {
 			} 
 		    }                    
                 }
-	    },                
+	    },
+            {
+		"transform": "FileOperations",
+		"dependencies": {
+		    "loan_features": ["DataFrameProfiler"]     
+		},
+		"args": {
+		    "actions": [
+			{
+			    "action": "copy",
+                            "files": ["loan_features.html", "loan_features.pickle"], 
+			    "src": "%(output)s/%(runid)s/viz", 
+			    "dst": "%(data_root)s/shared/campaigns"
+			}
+                    ]
+                }
+            }
 	]
     },
     "skins": []    
