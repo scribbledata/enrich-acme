@@ -1,0 +1,47 @@
+{
+    "name": "DailyBackup",
+    "description": "Backup all data API, run outputs, and others to GS",
+    "customer_root": "%(enrich_customers_dir)s/acme/Lending", 
+    "data_root": "%(enrich_data_dir)s/acme/Lending",
+    "runid": "backup-%Y%m%d-%H%M%S",
+    "output": "%(data_root)s/output/tasks/%(name)s", 
+    "log": "%(output)s/%(runid)s/log.json", 
+    "paths": { 
+	"libraries": ["%(customer_root)s/tasks/lib"]
+    },
+    "notification": {
+	"enable": false
+    },
+    "tasks": [
+	{
+	    "name": "BackupCoreTask",
+	    "enable": true,
+	    "args": { 
+		"backupdirs": [
+		    {
+			"enable": true,
+			"name": "Logs",
+			"src": "%(enrich_root)s/logs/", 
+			"dst": "backup/%(node)s/logs/"
+		    },
+		    {
+			"enable": true,
+			"name": "Data",
+			"src": "%(enrich_root)s/data/", 
+			"dst": "backup/%(node)s/data/"
+		    },
+		    {
+			"enable": true,
+			"name": "Shared",
+			"src": "%(enrich_root)s/shared/", 
+			"dst": "backup/%(node)s/bydate/%(datetime)s/shared/"
+		    }
+		],
+		"gcp": {
+		    "boto": "%(enrich_root)s/etc/gcp/boto/demouser",
+		    "bucket": "scribble-demodata" 
+		}
+	    }
+	}
+    ]
+}
