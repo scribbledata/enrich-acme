@@ -46,12 +46,58 @@ class MyTeamScore(Compute, S3Mixin):
                          'transform': self.name 
                      }))
 
+        # Make note of the input 
+        state.make_note("Synthetic Data Source: Expium (1800+ issues, 37 staff, 1 group, 14 projects/sprints)")
+         
         framemgr = self.config.get_dataframe('pandas') 
 
         jiradata = self.config.get_file(self.args['jiradata'])
 
         # Collect the dictionary 
-        summary = jira.compute(jiradata)
+        frames = jira.compute(jiradata)
+
+        ################################################
+        ## => Update state 
+        ################################################
+        for f in frames:
+            name = f['name']
+            df = f['df']
+            doc = f['documentation']
+
+            # Update global documentation 
+            self.outputs[name] = doc 
+
+            columns = {} 
+            for c in list(df.columns): 
+                columns[c] = { 
+                    'touch': self.name, # Who is introducing this column
+                    'datatype': framemgr.get_generic_dtype(df, c), # What is its type 
+                    'description': self.get_column_description(name, c) 
+                } 
+
+            ## => Gather the update parameters 
+            updated_detail = { 
+                'df': df, 
+                'transform': self.name,
+                'frametype': 'pandas',
+                'params': [
+                    {
+                        'type': 'compute',
+                        'columns': columns 
+                    }
+                ], 
+                'history': [
+                    # Add a log entry describing the change 
+                    {
+                        'transform': self.name, 
+                        'log': 'Sampled input', 
+                    }
+                ]
+            }
+            
+            # Update the state. 
+            state.update_frame(name, updated_detail, create=True)
+
         
         ###########################################
         # => Return 
