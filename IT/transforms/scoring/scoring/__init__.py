@@ -90,11 +90,12 @@ class MyTeamScore(Compute, S3Mixin):
                     # Add a log entry describing the change 
                     {
                         'transform': self.name, 
-                        'log': 'Sampled input', 
+                        'log': 'Processed the input jira data'
                     }
                 ]
             }
-            
+
+
             # Update the state. 
             state.update_frame(name, updated_detail, create=True)
 

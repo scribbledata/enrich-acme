@@ -41,7 +41,7 @@ config = {
                     "member": "TeamScore"
                 },
                 "args": {
-                    "frames": ["member", "project"],
+                    "frames": ["member", "project", "issue"],
                     "html": "%(output)s/%(runid)s/viz/%(frame)s.html",
                     "pickle": "%(output)s/%(runid)s/viz/%(frame)s.pickle"
                 }
@@ -66,6 +66,13 @@ config = {
 			"params": {
 			    "sep": ","
 			} 
+		    },
+                    "issue": { 
+		        "frametype": "pandas",
+		        "filename": "%(output)s/%(runid)s/issue.csv", 
+			"params": {
+			    "sep": ","
+			} 
 		    }                    
                 }
 	    },
@@ -78,8 +85,10 @@ config = {
 		    "actions": [
 			{
 			    "action": "copy",
-                            "files": ["member.html", "member.pickle"], 
-			    "src": "%(output)s/%(runid)s/viz", 
+                            "files": [
+                                "issue.csv", "project.csv", "member.csv"
+                            ], 
+			    "src": "%(output)s/%(runid)s", 
 			    "dst": "%(data_root)s/shared/jira"
 			}
                     ]
