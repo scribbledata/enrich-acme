@@ -1,1 +1,58 @@
-Projects 
+{% load fontawesome %}
+
+<table id="projecttable"
+       class="display" style="width:100%">       
+  <thead>
+    <tr style="vertical-align: top">
+      <th>{% fontawesome_icon 'building' %} Project</th>
+      <th><span title="Number of issues resolved in this project">{% fontawesome_icon 'expand' %} Complexity</span></th>
+      <th><span title="Engagement with peers in terms of the avg team size when this team member was involved in issue resolution.  high >= 80th percentile, low <= 20th percentile">{% fontawesome_icon 'handshake' %} Collaborativeness</span></th>
+      <th><span title="Fraction of issues related to firefighting. high >= 80th percentile, low <= 20th percentile">{% fontawesome_icon 'medkit' %}  Instability</span></th>
+      <th><span title="How many issues were seen through successful closure. high >= 80th percentile, low <= 20th percentile">{% fontawesome_icon 'bullseye' %} Delivery</span></th>
+
+      <th>{% fontawesome_icon 'link' %} Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in projects %}
+    <tr style="vertical-align: top">      
+      <th>{{p.project}}</th>
+      <td
+	 {% if p.complexity == 'low' %}
+	 class="bg-warning"
+	 {% elif p.complexity == 'high' %}	
+	 class="bg-success" 
+	 {% endif %}	 
+	 >{{p.complexity.title}}<br>({{p.issue_quantile}} %ile)</td>
+      <td
+	 {% if p.collaborativeness == 'low' %}
+	 class="bg-warning"
+	 {% elif p.collaborativeness == 'high' %}	
+	 class="bg-success" 
+	 {% endif %}	 
+	 >{{p.collaborativeness.title}} {% if p.collaborativeness != 'unknown' %}<br>({{p.groupsize_quantile}} %ile){% endif %}</td>
+      <td
+	 {% if p.instability == 'low' %}
+	 class="bg-success"
+	 {% elif p.instability == 'high' %}	
+	 class="bg-warning" 
+	 {% endif %}	 
+	 >{{p.instability.title}}<br>({{p.firefight_quantile}}%ile)</td>
+      <td
+	 {% if p.delivery == 'low' %}
+	 class="bg-warning"
+	 {% elif p.delivery == 'high' %}	
+	 class="bg-success" 
+	 {% endif %}	 
+	 >{{p.delivery.title}}<br>({{p.delivery_quantile}} %ile)</td>
+      <td>
+	<a class="btn btn-sm btn-primary"
+	   href="">
+	  {% fontawesome_icon 'bars' %}
+	</a>
+      </td>      
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+	

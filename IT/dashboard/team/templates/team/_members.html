@@ -1,32 +1,66 @@
 {% load fontawesome %}
 
 <table id="membertable"
-       class="display" style="width:100%">       
+       class="display"
+       style="width:100%; vertical-align: top">       
   <thead>
-    <tr>
-      <th>Member</th>
-      <th>Projects</th>
-      <th>Issues Handled</th>
-      <th>Ownership (Is Assignee)</th>
-      <th>Responsiveness (Time)</th>
-      <th>Collaborativeness (Group Size)</th>
-      <th>Fire-Fighting Ability (Critical Issue Participation)</th>
-      <th>Delivery Ability</th>
-      <th>Actions</th>
+    <tr style="vertical-align: top" >
+      <th>{% fontawesome_icon 'user' %} Member</th>
+      <th>{% fontawesome_icon 'building' %} Projects/ Issues</th>
+      <th><span title="Number of issues that the member participated in which member is an assignee">{% fontawesome_icon 'code' %} Ownership</span></th>
+      <th><span title="Responsiveness to peers-message when it happened.  high >= 80th percentile, low <= 20th percentile"> {% fontawesome_icon 'hourglass' %} Responsiveness</span></th>
+      <th><span title="Engagement with peers in terms of the avg team size when this team member was involved in issue resolution.  high >= 80th percentile, low <= 20th percentile">{% fontawesome_icon 'handshake' %} Collaborativeness</span></th>
+      <th><span title="Participation in the firefighting. high >= 80th percentile, low <= 20th percentile">{% fontawesome_icon 'fire' %} Fire Fighting</span></th>
+      <th><span title="Ability to complete tasks assigned to the member. high >= 80th percentile, low <= 20th percentile">{% fontawesome_icon 'bullseye' %} Delivery</span></th>
+      <th>{% fontawesome_icon 'link' %} Actions</th>
     </tr>
   </thead>
   <tbody>
     {% for m in members %}
-    <tr>
+    <tr style="vertical-align: top">
       <th>{{m.member}}</th>
-      <td>{{m.projects}}</td>
-      <td>{{m.issues}}</td>
-      <td>{{m.ownership_ability}}<br>({{m.ownership_quantile}}%ile)</td>
-      <td>{{m.responsiveness.title}} {% if m.responsiveness != 'unknown' %}<br>(Avg {{m.avg_response_time}} Days){% endif %}</td>
-      <td>{{m.collaborativeness.title}} {% if m.collaborativeness != 'unknown' %}<br>(Avg Group Size {{m.avg_groupsize}}){% endif %}</td>
-      <td>{{m.firefighting_ability.title}}<br>({{m.firefight_percent}}% of Issues)</td>
-      <td>{{m.delivery_ability.title}}<br>({{m.delivery_quantile}} %ile)</td>
-      <td></td>
+      <td>{{m.projects}}/{{m.issues}}</td>
+      <td
+	 {% if m.ownership_ability == 'low' %}
+	 class="bg-warning"
+	 {% elif m.ownership_ability == 'high' %}	
+	 class="bg-success" 
+	 {% endif %}
+	  >{{m.ownership_ability.title}}<br>({{m.ownership_quantile}} %ile)</td>
+      <td
+	 {% if m.responsiveness == 'low' %}
+	 class="bg-warning"
+	 {% elif m.responsiveness == 'high' %}	
+	 class="bg-success" 
+	 {% endif %}
+	 >{{m.responsiveness.title}} {% if m.responsiveness != 'unknown' %}<br>({{m.responsiveness_quantile|floatformat:"0"}} %ile){% endif %}</td>
+      <td
+	 {% if m.collaborativeness == 'low' %}
+	 class="bg-warning"
+	 {% elif m.collaborativeness == 'high' %}	
+	 class="bg-success" 
+	 {% endif %}	 
+	 >{{m.collaborativeness.title}} {% if m.collaborativeness != 'unknown' %}<br>({{m.avg_groupsize_quantile}} %ile){% endif %}</td>
+      <td
+	 {% if m.firefighting_ability == 'low' %}
+	 class="bg-warning"
+	 {% elif m.firefighting_ability == 'high' %}	
+	 class="bg-success" 
+	 {% endif %}	 
+	 >{{m.firefighting_ability.title}}<br>({{m.firefight_quantile}} %ile)</td>
+      <td
+	 {% if m.delivery_ability == 'low' %}
+	 class="bg-warning"
+	 {% elif m.delivery_ability == 'high' %}	
+	 class="bg-success" 
+	 {% endif %}	 
+	 >{{m.delivery_ability.title}}<br>({{m.delivery_quantile}} %ile)</td>
+      <td>
+	<a class="btn btn-sm btn-primary"
+	   href="">
+	  {% fontawesome_icon 'bars' %}
+	</a>
+      </td>
     </tr>
     {% endfor %}
   </tbody>

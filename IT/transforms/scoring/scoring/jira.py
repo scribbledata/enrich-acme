@@ -176,9 +176,12 @@ def generate_project_summary(issuedf):
         groupsize = round(rows['groupsize'].mean(),1)
         threeplus = rows[rows['groupsize'] > 2].shape[0]
 
+        successful = rows[rows['resolution'].isin(['Fixed', 'Resolved'])].shape[0]
+        
         return pd.Series({
             'issues': issues,
             'firefight_percent': round(100*firefights/issues,1),
+            'delivery_percent': round(100*successful/issues, 1),
             'groupsize': groupsize,
             'threeplus_group_percent': round(100*threeplus/issues,1),
         })
@@ -186,9 +189,10 @@ def generate_project_summary(issuedf):
     projectdf = issuedf.groupby('project').apply(summarize)
     projectdf = projectdf.reset_index()
 
+    percentile = lambda col, x: None if pd.isnull(x) else round(stats.percentileofscore(projectdf[col].dropna(),x))
+    
     eighty = projectdf['issues'].quantile(0.8)
     twenty = projectdf['issues'].quantile(0.2)
-
     def compute_complexity(count):
         if count <= twenty:
             return 'low'
@@ -197,10 +201,10 @@ def generate_project_summary(issuedf):
         else:
             return 'normal'
     projectdf.loc[:, 'complexity'] = projectdf['issues'].apply(compute_complexity)
-
+    projectdf.loc[:, 'issue_quantile'] = projectdf['issues'].apply(lambda x: percentile('issues', x))
+    
     eighty = projectdf['firefight_percent'].quantile(0.8)
     twenty = projectdf['firefight_percent'].quantile(0.2)
-
     def compute_instability(percent):
         if percent <= twenty:
             return 'low'
@@ -209,20 +213,42 @@ def generate_project_summary(issuedf):
         else:
             return 'normal'
     projectdf.loc[:, 'instability'] = projectdf['firefight_percent'].apply(compute_instability)
+    projectdf.loc[:, 'firefight_quantile'] = projectdf['firefight_percent'].apply(lambda x: percentile('firefight_percent', x))
 
-    seventy = projectdf['threeplus_group_percent'].quantile(0.7)
-    def compute_collaboration(percent):
-        if percent >= seventy:
+    # Delivery 
+    eighty = projectdf['delivery_percent'].quantile(0.8)
+    twenty = projectdf['delivery_percent'].quantile(0.2)
+    def compute_delivery(percent):
+        if percent <= twenty:
+            return 'low'
+        elif percent >= eighty:
             return 'high'
         else:
             return 'normal'
+    projectdf.loc[:, 'delivery'] = projectdf['delivery_percent'].apply(compute_instability)
+    projectdf.loc[:, 'delivery_quantile'] = projectdf['delivery_percent'].apply(lambda x: percentile('delivery_percent', x))    
 
-    projectdf.loc[:, 'collaboration_level'] = projectdf['threeplus_group_percent'].apply(compute_collaboration)
-
+    #=> collaborativeness
+    eighty = projectdf['groupsize'].quantile(0.8)
+    twenty = projectdf['groupsize'].quantile(0.2)
+    def compute_collaborativeness(value):
+        if pd.isnull(value):
+            return "unknown"
+        elif value <= twenty:
+            return 'low'
+        elif value >= eighty:
+            return 'high'
+        else:
+            return 'normal'
+    projectdf.loc[:, 'collaborativeness'] = projectdf['groupsize'].apply(compute_collaborativeness) 
+    projectdf.loc[:, 'groupsize_quantile'] = projectdf['groupsize'].apply(lambda x: percentile('groupsize', x))
 
     projectdf = projectdf[['project',
-                           'complexity', 'instability', 'collaboration_level',
-                           'issues', 'groupsize', 'threeplus_group_percent',
+                           'complexity', 'issues', 'issue_quantile',
+                           'delivery', 'delivery_percent', 'delivery_quantile',
+                           'instability', 'firefight_quantile',
+                           'collaborativeness', 'groupsize_quantile', 
+                           'groupsize', 'threeplus_group_percent',
                            'firefight_percent']]
 
     return projectdf
@@ -278,7 +304,7 @@ def generate_member_summary(completedf, member):
 def generate_members_summary(issuedf, projectdf):
 
     # Filter out unnecessary columns and conflicting columns such as group size
-    projectdf = projectdf[['project', 'complexity', 'instability', 'collaboration_level']]
+    projectdf = projectdf[['project', 'complexity', 'instability']]
 
     df = pd.merge(issuedf,
                   projectdf,
@@ -310,6 +336,9 @@ def generate_members_summary(issuedf, projectdf):
 
     df.loc[:, 'firefighting_ability'] = df['firefight_percent'].apply(compute_firefighting_ability)
 
+    gamma = lambda x: None if pd.isnull(x) else round(stats.percentileofscore(df['firefight_percent'].dropna(),x))
+    df.loc[:, 'firefight_quantile'] = df['firefight_percent'].apply(gamma) 
+    
     #=> responsiveness
     eighty = df['avg_response_time'].quantile(0.8)
     twenty = df['avg_response_time'].quantile(0.2)
@@ -324,12 +353,8 @@ def generate_members_summary(issuedf, projectdf):
             return 'normal'
     df.loc[:, 'responsiveness'] = df['avg_response_time'].apply(compute_responsiveness)
 
-    def responsetime_percentile(x):
-        if pd.isnull(x):
-            return None
-        else:
-            return round(stats.percentileofscore(df['avg_response_time'].dropna(),x))
-    df.loc[:, 'responsiveness_quantile'] = df['avg_response_time'].apply(responsetime_percentile)
+    omega = lambda x: None if pd.isnull(x) else round(stats.percentileofscore(df['avg_response_time'].dropna(),x))
+    df.loc[:, 'responsiveness_quantile'] = df['avg_response_time'].apply(omega)
 
     #=> collaborativeness
     eighty = df['avg_groupsize'].quantile(0.8)

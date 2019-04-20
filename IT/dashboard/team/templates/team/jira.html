@@ -39,22 +39,19 @@
 {% endblock %}
 
 {% block content %}
-
 <section style="position: relative">
-  {% include 'dashboard/_back.html' %}
-  <a class="btn btn-sm btn-primary pull-right right-spacing"
-     href="{% url 'dashboard:run_index' customer.org.name 'TeamPerformance' %}">
-    {% fontawesome_icon 'spinner' %} Documentation
-  </a>
-  
-
   <h2 class="text-center">JIRA Analysis</h2> 
-  <p class="text-center">Dataset and Assessment</p>
+  <p class="text-center">Team Performance using JIRA Dataset and Assessment</p>
+  <p class="text-center">Data Source: Synethetic Data from Expium (1800+ issues, 37 staff, 1 group, 14 projects/sprints)</p>
 </section>
-
 <ul class="nav nav-tabs">
-  <li class="active"><a data-toggle="tab" class="bg-primary" href="#members">members</a></li>
-  <li><a data-toggle="tab" class="bg-primary" href="#projects">Projects</a></li>
+  <li class="active"><a data-toggle="tab" class="bg-primary" href="#members">{% fontawesome_icon 'user' %} members</a></li>
+  <li><a data-toggle="tab" class="bg-primary" href="#projects">{% fontawesome_icon 'cog' %} Projects</a></li>
+  <li> <a class="bg-primary"
+	  href="{% url 'dashboard:run_index' customer.org.name 'TeamPerformance' %}">
+      {% fontawesome_icon 'spinner' %} Dataset 
+    </a></li>
+
 </ul>
 
 <div class="tab-content">
