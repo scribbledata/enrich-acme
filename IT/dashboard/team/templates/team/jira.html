@@ -1,0 +1,108 @@
+{% extends 'base.html' %} 
+{% load fontawesome %}
+{% load dashboard_tags %} 
+{% load staticfiles %}
+{% load humanize %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+  <li><a href="/">Enrich</a></li>
+  <li><a href="{% url 'dashboard:index' %}">Usecases</a></li>
+  <li><a href="{% app_url customer %}">{{customer.org.name}}</a></li>
+  <li>Dashboard</li>
+</ol>
+{% endblock breadcrumbs %}
+
+{% block customhead %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'js/marketplace/datatables/datatables.min.css' %}"/>
+<script type="text/javascript" language="javascript" src="{% static 'js/marketplace/datatables/datatables.min.js' %}"></script>
+
+<style>
+.nav-tabs > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+    zoom:1; /* hasLayout ie7 trigger */
+    color: red;
+}
+
+.nav-tabs, .nav-pills {
+    text-align:center;
+}
+
+.nav-tabs > li.active > a {
+    background-color:#18bc9c !important;
+    color: white !important;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section style="position: relative">
+  {% include 'dashboard/_back.html' %}
+  <a class="btn btn-sm btn-primary pull-right right-spacing"
+     href="{% url 'dashboard:run_index' customer.org.name 'TeamPerformance' %}">
+    {% fontawesome_icon 'spinner' %} Documentation
+  </a>
+  
+
+  <h2 class="text-center">JIRA Analysis</h2> 
+  <p class="text-center">Dataset and Assessment</p>
+</section>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" class="bg-primary" href="#members">members</a></li>
+  <li><a data-toggle="tab" class="bg-primary" href="#projects">Projects</a></li>
+</ul>
+
+<div class="tab-content">
+  <div id="members" class="tab-pane fade in active">
+    {% include 'team/_members.html' with members=members customer=customer basenamespace=basenamespace %} 
+  </div>
+  <div id="projects" class="tab-pane fade">      
+    {% include 'team/_projects.html' with projects=projects customer=customer basenamespace=basenamespace %} 
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+  
+    if ($('#membertable').length > 0){   
+        $('#membertable').DataTable({
+            "dom": 'Bftlirp',
+            "paging": true,
+            "pageLength": 10, 
+            "pagingType": "full_numbers",
+            "ordering": true,
+            "bSort": true,
+            "mark": true,
+            "info": true,
+            "search": true,
+            "select": true,
+            "buttons": []  
+        });
+  }
+
+    if ($('#projecttable').length > 0){   
+        $('#projecttable').DataTable({
+            "dom": 'Bftlirp',
+            "paging": true,
+            "pageLength": 10, 
+            "pagingType": "full_numbers",
+            "ordering": true,
+            "bSort": true,
+            "mark": true,
+            "info": true,
+            "search": true,
+            "select": true,
+            "buttons": []
+   
+        });
+    }  
+});
+</script>
+
+
+{% endblock content %}

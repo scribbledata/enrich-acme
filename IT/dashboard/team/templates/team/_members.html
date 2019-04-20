@@ -1,0 +1,34 @@
+{% load fontawesome %}
+
+<table id="membertable"
+       class="display" style="width:100%">       
+  <thead>
+    <tr>
+      <th>Member</th>
+      <th>Projects</th>
+      <th>Issues Handled</th>
+      <th>Ownership (Is Assignee)</th>
+      <th>Responsiveness (Time)</th>
+      <th>Collaborativeness (Group Size)</th>
+      <th>Fire-Fighting Ability (Critical Issue Participation)</th>
+      <th>Delivery Ability</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for m in members %}
+    <tr>
+      <th>{{m.member}}</th>
+      <td>{{m.projects}}</td>
+      <td>{{m.issues}}</td>
+      <td>{{m.ownership_ability}}<br>({{m.ownership_quantile}}%ile)</td>
+      <td>{{m.responsiveness.title}} {% if m.responsiveness != 'unknown' %}<br>(Avg {{m.avg_response_time}} Days){% endif %}</td>
+      <td>{{m.collaborativeness.title}} {% if m.collaborativeness != 'unknown' %}<br>(Avg Group Size {{m.avg_groupsize}}){% endif %}</td>
+      <td>{{m.firefighting_ability.title}}<br>({{m.firefight_percent}}% of Issues)</td>
+      <td>{{m.delivery_ability.title}}<br>({{m.delivery_quantile}} %ile)</td>
+      <td></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+	
