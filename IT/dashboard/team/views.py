@@ -1,5 +1,7 @@
 import os
 import sys
+import json 
+import logging
 import pandas as pd
 
 from django.shortcuts import render
@@ -14,6 +16,8 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from enrichapp.dashboard.campaigns import lib as scribblelib
 
+logger = logging.getLogger('app')
+
 def index(request):
     return render(request,
                   'team/index.html',
@@ -23,25 +27,31 @@ def index(request):
                   })
 
 def jira(request):
-    memberfile = os.path.expandvars("$ENRICH_DATA/acme/IT/shared/jira/member.csv")
-    projectfile = os.path.expandvars("$ENRICH_DATA/acme/IT/shared/jira/project.csv")    
 
-    if not os.path.exists(memberfile):
-        error = "JIRA Dataset missing"
+    try: 
+        rawfile = os.path.expandvars("$ENRICH_DATA/acme/IT/shared/Jumble-for-JIRA-039d122a-57be-44df-4a4b-d9a444478cee.json")        
+        memberfile = os.path.expandvars("$ENRICH_DATA/acme/IT/shared/jira/member.csv")
+        projectfile = os.path.expandvars("$ENRICH_DATA/acme/IT/shared/jira/project.csv")    
+
+        rawdata = open(rawfile).read(10000)
+        memberdf = pd.read_csv(memberfile) 
+        members = memberdf.to_dict('records')
+        
+        projectdf = pd.read_csv(projectfile) 
+        projects = projectdf.to_dict('records')    
+
+    except:
+        error = "Error while obtaining data"
+        logger.exception(error)
         messages.error(request, error) 
         return HttpResponseRedirect(reverse('team:index')) 
         
-    memberdf = pd.read_csv(memberfile) 
-    members = memberdf.to_dict('records')
-
-    projectdf = pd.read_csv(projectfile) 
-    projects = projectdf.to_dict('records')    
     
     return render(request,
                   'team/jira.html',
                   {
                       'customer': scribblelib.find_my_customer(__file__),
                       'members': members,
-                      'projects': projects 
-
+                      'projects': projects,
+                      'rawdata': rawdata
                   })
