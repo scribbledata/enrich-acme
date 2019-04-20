@@ -27,9 +27,9 @@ def jira(request):
     projectfile = os.path.expandvars("$ENRICH_DATA/acme/IT/shared/jira/project.csv")    
 
     if not os.path.exists(memberfile):
-        error = "Missing dataset"
+        error = "JIRA Dataset missing"
         messages.error(request, error) 
-        return HttpResponseRedirect(reverse('jira:index')) 
+        return HttpResponseRedirect(reverse('team:index')) 
         
     memberdf = pd.read_csv(memberfile) 
     members = memberdf.to_dict('records')
