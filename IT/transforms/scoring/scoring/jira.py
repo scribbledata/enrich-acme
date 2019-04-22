@@ -14,20 +14,30 @@ from dateutil import parser as date_parser
 
 def get_documentation():
     return {
+        'team': "Name of the Team",
+        'attributes': 'Summary of attributes of each team',
         'member': "Team Member",
         'project': "Name of the project/sprint",
-        'issues': "Total number of issues",
+        "projects": "Number of projects that the member has been part of",
+        
+        'issues': "Total number of issues",        
         "issue_percent": "Percent of total issues that involved the team member in some way",
+        "issue_quantile": "For each project, the percentile across all projects of the number of issues", 
+
         'avg_groupsize': "Average number of members involved in issue discussions",
         "avg_groupsize_quantile": "For a given member, the quantile of the his/her avg_groupsize",
+        "groupsize_quantile": "For a given member/team, the quantile of member's/team's average groupsize across peers",
+
         'avg_response_time': "Average time (in days) when the team member responded to others' posts",
         "firefight": "Whether issuetype as Emergency or Epic",
         "stability": "Whether issuetype was Bug, Emergency, Epic",
         "skilled": "Whether the issue involved design thinking",
         'threeplus_percent': "Percentage of issues with three or more team members",
         'firefight_percent': "Percentage of issues that are marked emergency or epic",
+
         'ownership_percent': "Percentage of issues in which the team member participated and in which the team member was the assignee or took ownership to deliver",
-        'ownership_percentile': "Percentile of the percentage of issues in which the team member participated and in which the team member was the assignee or took ownership to deliver",
+        'ownership_quantile': "Percentile of the percentage of issues in which the team member participated and in which the team member was the assignee or took ownership to deliver",
+        
         'delivery_percent': "Percentage of issues owned by member that were fixed or resolved",
         'instability': 'Project instability based on the amount of firefighting that needed to be done to make it work. Low < 20% firefighting issues, high >= 80%, and rest is regular',
         "complexity": "Estimate of difficulty of the project in terms of the number of issues. High >= 80th percentile across all projects, Low <= 20th percentile, normal otherwise",
@@ -51,11 +61,22 @@ def get_documentation():
         "responses": "Average response time to another team member's post when there was a response",
         "groupsize": "Number of team members who participated in a given issue",
 
+        "ownership_ability": "Willingness/ability to own issues to deliver. high >= 70th percentile, low <= 20th percentile",
+
+        "firefight_quantile": "Quantile of the firefighting issue percentage across peer members/teams/projects",
         "firefighting_ability": "Participation in the firefighting. high >= 80th percentile, low <= 20th percentile",
+
+        
         "responsiveness": "Responsiveness to peers-message when it happened.  high >= 80th percentile, low <= 20th percentile",
         "responsiveness_quantile": "For each member, percentile of average response time across all members",
+
+        
         "collaborativeness": "Engagement with peers in terms of the avg team size when this team member was involved in issue resolution.  high >= 80th percentile, low <= 20th percentile",
-        "delivery_ability": "Ability to complete tasks assigned to the member. high >= 80th percentile, low <= 20th percentile",
+
+        "delivery": "Ability to complete tasks assigned to the team. high >= 70th percentile, low <= 20th percentile",
+
+        "delivery_quantile": "For each member/team/project, percentile of fraction of issues taken to closure across peers",        
+        "delivery_ability": "Ability to complete tasks assigned to the member/team as appropriate. high >= 70th percentile, low <= 20th percentile",        
     }
 
 def annotate_issue(issue):
@@ -225,11 +246,11 @@ def generate_project_summary(issuedf):
             return 'high'
         else:
             return 'normal'
-    projectdf.loc[:, 'delivery'] = projectdf['delivery_percent'].apply(compute_instability)
+    projectdf.loc[:, 'delivery_ability'] = projectdf['delivery_percent'].apply(compute_instability)
     projectdf.loc[:, 'delivery_quantile'] = projectdf['delivery_percent'].apply(lambda x: percentile('delivery_percent', x))    
 
     #=> collaborativeness
-    eighty = projectdf['groupsize'].quantile(0.8)
+    seventy = projectdf['groupsize'].quantile(0.8)
     twenty = projectdf['groupsize'].quantile(0.2)
     def compute_collaborativeness(value):
         if pd.isnull(value):
@@ -245,7 +266,7 @@ def generate_project_summary(issuedf):
 
     projectdf = projectdf[['project',
                            'complexity', 'issues', 'issue_quantile',
-                           'delivery', 'delivery_percent', 'delivery_quantile',
+                           'delivery_ability', 'delivery_percent', 'delivery_quantile',
                            'instability', 'firefight_quantile',
                            'collaborativeness', 'groupsize_quantile', 
                            'groupsize', 'threeplus_group_percent',
@@ -375,12 +396,12 @@ def generate_members_summary(issuedf, projectdf):
     df.loc[:, 'avg_groupsize_quantile'] = df['avg_groupsize'].apply(alpha)
 
     #=> Insert firefighting ability
-    eighty = df['delivery_percent'].quantile(0.8)
+    seventy = df['delivery_percent'].quantile(0.7)
     twenty = df['delivery_percent'].quantile(0.2)
     def compute_delivery_ability(percent):
         if percent <= twenty:
             return 'low'
-        elif percent >= eighty:
+        elif percent >= seventy:
             return 'high'
         else:
             return 'normal'
@@ -390,14 +411,14 @@ def generate_members_summary(issuedf, projectdf):
     df.loc[:, 'delivery_quantile'] = df['delivery_percent'].apply(beta)
 
     #=> Ownership ability
-    eighty = df['ownership_percent'].quantile(0.8)
+    seventy= df['ownership_percent'].quantile(0.7)
     twenty = df['ownership_percent'].quantile(0.2)
     def compute_owning_ability(value):
         if pd.isnull(value):
             return "unknown"
         elif value <= twenty:
             return 'low'
-        elif value >= eighty:
+        elif value >= seventy:
             return 'high'
         else:
             return 'normal'
@@ -409,10 +430,54 @@ def generate_members_summary(issuedf, projectdf):
 
     return df
 
+def generate_group_summary(groupsummary, memberdf, users):
+
+    # Extract rows of each relevant users 
+    rows = memberdf[memberdf.member.isin(users)] 
+
+    groupsummary['members'] = len(rows)
+
+    attributes = {}
+    
+    # Normalize...
+    for col in ['ownership_ability', 'delivery_ability',
+                'collaborativeness', 'responsiveness',
+                'firefighting_ability']:
+        counts = rows[col].value_counts()
+        total = counts.sum()
+        counts = (counts * 100/total).round()
+        counts = counts.to_dict() 
+        attributes[col] = counts 
+
+    groupsummary['attributes'] = json.dumps(attributes) 
+    
+def generate_team_summary(rawdata, memberdf):
+
+    groups = {}
+    for u in rawdata['users']:
+        name = u['name'] 
+        for g in u['groups']:
+            groups[g] = groups.get(g, []) + [name] 
+
+    summary = []
+    for g in groups:
+        users = groups[g]
+        groupsummary = OrderedDict([
+            ['team',g]
+        ])
+        generate_group_summary(groupsummary, memberdf, users)
+        summary.append(groupsummary)
+
+    
+    teamdf = pd.DataFrame(summary)
+
+    return teamdf 
+    
 def compute(filename):
 
     # Load rawdata
     rawdata = json.load(open(filename))
+
 
     # Gather issues
     issuedf, member = gather_issues(rawdata)
@@ -420,6 +485,8 @@ def compute(filename):
     projectdf = generate_project_summary(issuedf)
 
     memberdf = generate_members_summary(issuedf, projectdf)
+
+    teamdf = generate_team_summary(rawdata, memberdf) 
 
     return [
         {
@@ -436,5 +503,10 @@ def compute(filename):
             'name': 'member',
             'df': memberdf,
             'documentation': get_documentation()
-        }
+        },
+        {
+            'name': 'team',
+            'df': teamdf,
+            'documentation': get_documentation()
+        }        
     ]

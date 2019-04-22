@@ -46,6 +46,7 @@
 </section>
 <ul class="nav nav-tabs">
   <li class="active"><a data-toggle="tab" class="bg-primary" href="#members">{% fontawesome_icon 'user' %} members</a></li>
+  <li><a data-toggle="tab" class="bg-primary" href="#teams">{% fontawesome_icon 'users' %} Teams</a></li>  
   <li><a data-toggle="tab" class="bg-primary" href="#projects">{% fontawesome_icon 'cog' %} Projects</a></li>
   <li><a data-toggle="tab" class="bg-primary" href="#data">{% fontawesome_icon 'table' %} Input</a></li>  
   <li> <a class="bg-primary"
@@ -59,9 +60,12 @@
   <div id="members" class="tab-pane fade in active">
     {% include 'team/_members.html' with members=members customer=customer basenamespace=basenamespace %} 
   </div>
+  <div id="teams" class="tab-pane fade">      
+    {% include 'team/_teams.html' with teams=teams customer=customer basenamespace=basenamespace %} 
+  </div>
   <div id="data" class="tab-pane fade">      
     {% include 'team/_rawdata.html' with rawdata=rawdata customer=customer basenamespace=basenamespace %} 
-  </div>
+  </div>  
   <div id="projects" class="tab-pane fade">      
     {% include 'team/_projects.html' with projects=projects customer=customer basenamespace=basenamespace %} 
   </div>  

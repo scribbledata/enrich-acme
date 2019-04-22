@@ -67,6 +67,13 @@ config = {
 			    "sep": ","
 			} 
 		    },
+                    "team": { 
+		        "frametype": "pandas",
+		        "filename": "%(output)s/%(runid)s/team.csv", 
+			"params": {
+			    "sep": ","
+			} 
+		    },                    
                     "issue": { 
 		        "frametype": "pandas",
 		        "filename": "%(output)s/%(runid)s/issue.csv", 
@@ -86,7 +93,7 @@ config = {
 			{
 			    "action": "copy",
                             "files": [
-                                "issue.csv", "project.csv", "member.csv"
+                                "issue.csv", "project.csv", "member.csv", "team.csv"
                             ], 
 			    "src": "%(output)s/%(runid)s", 
 			    "dst": "%(data_root)s/shared/jira"
