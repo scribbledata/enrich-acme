@@ -14,8 +14,6 @@ def analysis(df):
 
     loan = df
 
-    print(df.columns)
-    
     #Dump rows where policy_code is NaN or 2
     lpc = loan['policy_code']
     loan = loan[~(loan['policy_code'].isnull() | (loan['policy_code'] == 2))]

@@ -2,8 +2,9 @@ from django.conf.urls import url, include
 from enrichapp.dashboard.catalog.urls import catalog_urlpatterns
 from enrichapp.dashboard.marketplace.urls import marketplace_urlpatterns
 from enrichapp.dashboard.overview.urls import overview_urlpatterns 
+from enrichapp.dashboard.featureserve.urls import featureserve_urlpatterns 
 
-from . import views, catalog, marketplace, overview 
+from . import views, catalog, marketplace, overview, featureserve
 
 app_name = "lendingcore"
 
@@ -26,6 +27,14 @@ urlpatterns += [
                                   namespace="marketplace"),
         {
             'spec': marketplace.get_spec() 
+        })
+]
+
+urlpatterns += [ 
+    url(r'^featureserve/', include(featureserve_urlpatterns, 
+                                   namespace="featureserve"),
+        {
+            'spec': featureserve.get_spec() 
         })
 ]
 

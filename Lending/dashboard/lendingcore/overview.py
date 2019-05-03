@@ -4,7 +4,7 @@ overview_spec = {
     'name': 'Marketplace',
     'description': "Project Overview",
     'customer': scribblelib.find_my_customer(__file__),
-    'force_list': ['core'],
+    'force_list': ['core', 'search'],
     'marketplace': [
         {
             'label': 'Marketplace',
@@ -23,6 +23,13 @@ overview_spec = {
             'pipeline':  'LendingAnalysis',
             'description': 'Lending Data Features'
         },
+    ],
+    "search": [
+        {
+            'label': 'Feature Service',
+            'description': "API and Search Interface",
+            'url': 'lendingcore:featureserve:index'
+        }
     ]
 }
 

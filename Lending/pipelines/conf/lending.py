@@ -86,6 +86,32 @@ config = {
 			}
                     ]
                 }
+            },
+            {
+                "transform": "FeatureOps",
+                "dependencies": {
+                    "loan_features": "TableSink"
+                },
+                "args": {
+                    "actions": [
+                        {
+                            "name": "lendingfeatures_upload",
+                            "errors": "fail",
+                            "featurestore": {
+                                "nature": "es",
+                                "cred": "es",
+                                "params": {}
+                            },
+                            "datasets": [
+                                {
+                                    "frame": "loan_features",
+                                    "featureid": "%(id)s:%(meta_ts)s",
+                                    "collection": "loan"
+                                }
+                            ]
+                        }
+                    ]
+                }
             }
 	]
     },
