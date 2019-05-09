@@ -3,7 +3,7 @@
     "description": "Features for Risk Modeling",
     "version": 1.0, 
     "minorversion": 1.0,
-    "author": "Venkata Pingali",
-    "tags": ["tag1", "tag2"],
-    "files": ["__init__.py", "file2", "file3"]
+    "author": "Acme Inc",
+    "tags": [],
+    "files": ["__init__.py"]
 }

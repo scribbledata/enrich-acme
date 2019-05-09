@@ -3,7 +3,7 @@
     "description": "Developer and Team Scores",
     "version": 1.0, 
     "minorversion": 1.0,
-    "author": "Venkata Pingali",
+    "author": "Acme Inc",
     "tags": ["jira"],
     "files": ["__init__.py"]
 }
