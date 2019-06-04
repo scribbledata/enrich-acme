@@ -1,38 +1,44 @@
+#!/usr/bin/env python3
+
 # Modified code from here..
 # http://www.kohkodes.com/posts/2017-04-10-lendingclub/
 # Dataset is here http://web.archive.org/web/20140706042617/https://www.lendingclub.com/info/download-data.action
 
+import os
+import sys
 import re
+import json 
 import numpy as np
 import pandas as pd
 from datetime import datetime
-import os
 from functools import reduce
 from datetime import datetime
+
 from sklearn.linear_model import LogisticRegression
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-import re
 from sklearn.preprocessing import RobustScaler, MinMaxScaler, StandardScaler
 from scipy.spatial.distance import pdist, squareform
+
 import mlflow
 import mlflow.sklearn
 
+if 'MLFLOW_TRACKING_URI' not in os.environ:
+    print("Expecting environment variable: MLFLOW_TRACKING_URI")
+    print(" Example: https://alga:beta@mlflow.scribbledata.io")
+    sys.exit()
 
 pd.set_option('display.max_columns', 100)
 
-input_data_loc = os.environ["MLFLOW_DATA"]
-
-loan = pd.read_csv(os.path.join(input_data_loc,'Loans.csv'),low_memory=False)
-# loan = pd.read_csv('LoanStats3a.csv')
-
-
+# See instructions above on how to combine the data and generate a
+# single file.
+input_file = os.path.expandvars("$ENRICH_DATA/acme/Lending/shared/datasets/Loans.csv") 
+loan = pd.read_csv(input_file, error_bad_lines=False, low_memory=False)
 
 # Dump rows where policy_code is NaN or 2
 lpc = loan['policy_code']
 loan = loan[~(loan['policy_code'].isnull() | (loan['policy_code'] == 2))]
 loan = loan.drop('policy_code', axis=1)
+
 # Fix the not very helpful information added to loan_status for some rows
 loan['loan_status'] = loan['loan_status'].map(lambda x: x.replace('Does not meet the credit policy.  Status:', ''))
 loan['id'] = loan['id'].astype(int)
@@ -292,10 +298,16 @@ null_cols = set(X.columns[X.isnull().sum() > 0])
 null_cols = null_cols - set([c+'_missing' for c in informative_nulls])
 max_iter = 1
 eps = 1e-3
-mlflow.set_tracking_uri(os.environ["MLFLOW_TRACKING_URL"])
+mlflow.set_tracking_uri(os.environ["MLFLOW_TRACKING_URI"])
 
+features = {
+    'schema': 'features:mlflow:standard:v1',
+    'input': input_file,
+    'features': list(X_scale_c.columns)
+}
+    
 f = open('feature_file.json', 'w')
-f.write(str(list(X_scale_c.columns)))
+f.write(json.dumps(features, indent=4))
 f.close()
 mlflow.log_artifact("feature_file.json","model")
 os.remove('feature_file.json')
