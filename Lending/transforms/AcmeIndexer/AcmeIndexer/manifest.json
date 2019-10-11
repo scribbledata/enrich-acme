@@ -1,0 +1,9 @@
+{
+    "name": "AcmeIndexer",
+    "description": "Customizer Indexer for Acme Outputs",
+    "version": 1.0, 
+    "minorversion": 1.0,
+    "author": "Acme",
+    "tags": [],
+    "files": ["__init__.py"]
+}

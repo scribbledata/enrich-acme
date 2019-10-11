@@ -4,7 +4,7 @@ overview_spec = {
     'name': 'Marketplace',
     'description': "Project Overview",
     'customer': scribblelib.find_my_customer(__file__),
-    'force_list': ['core', 'search'],
+    'force_list': ['core', 'search', 'audit'],
     'marketplace': [
         {
             'label': 'Marketplace',
@@ -16,6 +16,19 @@ overview_spec = {
             'label': 'Catalog',
             'url': 'lendingcore:catalog:index'
         }
+    ],
+    "labeling": [
+        {
+            'label': "Annotations",
+            'url': 'lendingcore:annotations:index'
+        }
+    ],
+    "audit": [
+        {
+            'label': 'Lineage (Beta)',
+            'url': 'hopscotchapp:audit:index',
+            'description': "Search interface for platform artifacts",
+        },
     ],
     'core': [
         {

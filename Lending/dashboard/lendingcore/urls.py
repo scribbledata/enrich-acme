@@ -1,10 +1,11 @@
-from django.conf.urls import url, include 
+from django.conf.urls import url, include
 from enrichapp.dashboard.catalog.urls import catalog_urlpatterns
 from enrichapp.dashboard.marketplace.urls import marketplace_urlpatterns
-from enrichapp.dashboard.overview.urls import overview_urlpatterns 
-from enrichapp.dashboard.featureserve.urls import featureserve_urlpatterns 
+from enrichapp.dashboard.overview.urls import overview_urlpatterns
+from enrichapp.dashboard.featureserve.urls import featureserve_urlpatterns
+from enrichapp.dashboard.annotations.urls import annotations_urlpatterns
 
-from . import views, catalog, marketplace, overview, featureserve
+from . import views, catalog, marketplace, overview, featureserve, annotations
 
 app_name = "lendingcore"
 
@@ -14,34 +15,44 @@ urlpatterns = [
     url(r'^start$', views.start, name="start"),
 ]
 
-urlpatterns += [ 
-    url(r'^catalog/', include(catalog_urlpatterns, 
+urlpatterns += [
+    url(r'^catalog/', include(catalog_urlpatterns,
                               namespace="catalog"),
         {
-            'spec': catalog.get_spec() 
+            'spec': catalog.get_spec()
         })
 ]
 
-urlpatterns += [ 
-    url(r'^marketplace/', include(marketplace_urlpatterns, 
+urlpatterns += [
+    url(r'^marketplace/', include(marketplace_urlpatterns,
                                   namespace="marketplace"),
         {
-            'spec': marketplace.get_spec() 
+            'spec': marketplace.get_spec()
         })
 ]
 
-urlpatterns += [ 
-    url(r'^featureserve/', include(featureserve_urlpatterns, 
+urlpatterns += [
+    url(r'^featureserve/', include(featureserve_urlpatterns,
                                    namespace="featureserve"),
         {
-            'spec': featureserve.get_spec() 
+            'spec': featureserve.get_spec()
         })
 ]
 
-urlpatterns += [ 
-    url(r'^overview/', include(overview_urlpatterns, 
+
+annospec = annotations.get_annotations_spec()
+urlpatterns += [
+    url(r'^annotations/', include(annotations_urlpatterns,
+                                namespace="annotations"),
+    {
+            'spec': annospec
+        })
+]
+
+urlpatterns += [
+    url(r'^overview/', include(overview_urlpatterns,
                                namespace="overview"),
         {
-            'spec': overview.get_spec() 
+            'spec': overview.get_spec()
         })
 ]

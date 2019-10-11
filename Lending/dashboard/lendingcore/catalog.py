@@ -6,15 +6,18 @@ def get_spec():
 
     return {
         'name': 'Catalog',
-        'description': "Catalog for LendingCore Projects", 
+        'description': "Catalog for LendingCore Projects",
         'customer': scribblelib.find_my_customer(__file__),
         'models': {
             'catalog': Catalog,
             'datasource': DataSource,
-            'column': Column
+            'column': Column,
+            'attachment': Attachment,
+
         },
         'forms': {
             'catalog': CatalogForm,
+            'attachment': AttachmentForm,
             'datasource': DataSourceForm,
             'column': ColumnForm
         }
