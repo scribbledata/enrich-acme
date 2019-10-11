@@ -26,7 +26,7 @@ overview_spec = {
     "audit": [
         {
             'label': 'Lineage (Beta)',
-            'url': 'hopscotchapp:audit:index',
+            'url': 'lendingcore:audit:index',
             'description': "Search interface for platform artifacts",
         },
     ],
