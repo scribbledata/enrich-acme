@@ -57,7 +57,7 @@ urlpatterns += [
         {
             'spec': auditspec
         })
-
+]
 
 urlpatterns += [
     url(r'^overview/', include(overview_urlpatterns,
