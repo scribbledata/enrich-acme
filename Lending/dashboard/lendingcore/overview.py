@@ -36,8 +36,18 @@ overview_spec = {
             'pipeline':  'LendingAnalysis',
             'description': 'Lending Data Features'
         },
+        {
+            'label': 'AutoFE',
+            'pipeline':  'SimpleFEPipeline',
+            'description': 'Automated Feature Engineering'
+        },
     ],
     "search": [
+        {
+            'label': 'Search',
+            'description': "Search and Export",
+            'url': 'lendingcore:loan:index'
+        },        
         {
             'label': 'Feature Service',
             'description': "API and Search Interface",

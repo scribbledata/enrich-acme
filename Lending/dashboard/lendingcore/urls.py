@@ -5,8 +5,9 @@ from enrichapp.dashboard.overview.urls import overview_urlpatterns
 from enrichapp.dashboard.featureserve.urls import featureserve_urlpatterns
 from enrichapp.dashboard.annotations.urls import annotations_urlpatterns
 from enrichapp.dashboard.audit.urls import audit_urlpatterns
+from enrichapp.dashboard.campaigns.urls import campaign_urlpatterns
 
-from . import views, catalog, marketplace, overview, featureserve, annotations, audit
+from . import views, catalog, marketplace, overview, featureserve, annotations, audit, search
 
 app_name = "lendingcore"
 
@@ -56,6 +57,15 @@ urlpatterns += [
                               namespace="audit"),
         {
             'spec': auditspec
+        })
+]
+
+spec = search.get_loan_spec()
+urlpatterns += [
+    url(r'^search/loan', include(campaign_urlpatterns,
+                                 namespace="loan"),
+        {
+            'spec': spec
         })
 ]
 
