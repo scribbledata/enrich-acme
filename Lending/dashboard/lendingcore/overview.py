@@ -44,13 +44,13 @@ overview_spec = {
     ],
     "search": [
         {
-            'label': 'Search',
-            'description': "Search and Export",
+            'label': 'Cohort Search',
+            'description': "Filter and Export Cohorts",
             'url': 'lendingcore:loan:index'
         },        
         {
             'label': 'Feature Service',
-            'description': "API and Search Interface",
+            'description': "Features at Point in Time",
             'url': 'lendingcore:featureserve:index'
         }
     ]
