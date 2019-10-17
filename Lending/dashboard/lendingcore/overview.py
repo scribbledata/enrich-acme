@@ -38,7 +38,7 @@ overview_spec = {
         },
         {
             'label': 'AutoFE',
-            'pipeline':  'SimpleFEPipeline',
+            'url': "enrichdemo:demopipe:index",
             'description': 'Automated Feature Engineering'
         },
     ],
