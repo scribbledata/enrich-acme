@@ -2,12 +2,13 @@ from django.conf.urls import url, include
 from enrichapp.dashboard.catalog.urls import catalog_urlpatterns
 from enrichapp.dashboard.marketplace.urls import marketplace_urlpatterns
 from enrichapp.dashboard.overview.urls import overview_urlpatterns
+from enrichapp.dashboard.control.urls import control_urlpatterns
 from enrichapp.dashboard.featureserve.urls import featureserve_urlpatterns
 from enrichapp.dashboard.annotations.urls import annotations_urlpatterns
 from enrichapp.dashboard.audit.urls import audit_urlpatterns
 from enrichapp.dashboard.campaigns.urls import campaign_urlpatterns
 
-from . import views, catalog, marketplace, overview, featureserve, annotations, audit, search
+from . import views, catalog, marketplace, overview, control, featureserve, annotations, audit, search
 
 app_name = "lendingcore"
 
@@ -74,5 +75,13 @@ urlpatterns += [
                                namespace="overview"),
         {
             'spec': overview.get_spec()
+        })
+]
+
+urlpatterns += [
+    url(r'^control/', include(control_urlpatterns,
+                                namespace="control"),
+        {
+            'spec': control.get_spec()
         })
 ]
