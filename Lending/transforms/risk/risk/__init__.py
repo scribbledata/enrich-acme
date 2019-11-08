@@ -63,7 +63,7 @@ class MyRiskFeatures(Compute, S3Mixin, TransformSchemaMixin):
             'params': [
                         {
                             'type': 'compute',
-                            'columns': columns 
+                            'columns': columns,
                         }
             ], 
             'history': [
@@ -94,7 +94,8 @@ class MyRiskFeatures(Compute, S3Mixin, TransformSchemaMixin):
             'params': [
                         {
                             'type': 'compute',
-                            'columns': columns 
+                            'columns': columns,
+                            'description': "Lending features"
                         }
             ], 
             'history': [

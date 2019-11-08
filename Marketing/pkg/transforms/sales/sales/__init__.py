@@ -19,14 +19,18 @@ class MySalesModel(Compute, S3Mixin):
         self.dependencies = { 
 	}
 
-        self.testdata = { 
+        self.testdata = {
+            'data_root': os.path.join(os.environ['ENRICH_TEST'],
+                                      self.name),
+            'statedir': os.path.join(os.environ['ENRICH_TEST'],
+                                     self.name, 'state'),
 	    'conf': {
 	        'args': {
                     'sales': "%(data_root)s/shared/acme/carsales.csv",
                     'cars': "%(data_root)s/shared/acme/usedcars.csv"
 		}
 	    },
-            'data': { 
+            'data': {
             }
         }
     def process(self, state): 
