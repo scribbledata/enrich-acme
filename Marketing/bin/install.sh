@@ -22,6 +22,7 @@ mkdir -p $MODEL_TEST_SHARED
 URL="https://raw.githubusercontent.com/irJERAD/Intro-to-Data-Science-in-Python/master/MyNotebooks/cars.csv"
 wget -q $URL -O $SHARED/usedcars.csv
 wget -q $URL -O $MODEL_TEST_SHARED/usedcars.csv
+wget -q $URL -O $SALES_TEST_SHARED/usedcars.csv
 
 URL="https://communities.sas.com/kntur85557/attachments/kntur85557/programming/113336/1/Car%20sales.csv"
 wget -q $URL -O $SHARED/carsales.csv
