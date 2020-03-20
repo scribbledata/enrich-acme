@@ -25,6 +25,7 @@ class MyCarModel(Compute, S3Mixin):
         self.testdata = {
             'data_root': os.path.join(os.environ['ENRICH_TEST'],
                                       self.name),
+            'inputdir': os.environ['ENRICH_TEST'],
             'statedir': os.path.join(os.environ['ENRICH_TEST'],
                                      self.name, 'state'),
 	    'conf': {
