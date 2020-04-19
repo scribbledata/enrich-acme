@@ -1,3 +1,3 @@
 # Acme Inc 
 
-Enrich pipeline code repository
+Enrich dashboard, pipelines, and assets for Acme Inc
