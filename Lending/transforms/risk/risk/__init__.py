@@ -1,15 +1,15 @@
 import os
 import sys
 import json
-import numpy as np 
-import pandas as pd 
+import numpy as np
+import pandas as pd
 from enrichsdk import Compute, S3Mixin, CheckpointMixin
-from datetime import datetime 
+from datetime import datetime
 from dateutil import parser as dateparser
-import logging 
+import logging
 from enrichsdk.quality import *
 
-from enrichsdk.contrib.catalog import TransformSchemaMixin 
+from enrichsdk.contrib.catalog import TransformSchemaMixin
 from .koh import analysis
 
 thisdir = os.path.abspath(os.path.dirname(__file__))
@@ -17,7 +17,7 @@ thisdir = os.path.abspath(os.path.dirname(__file__))
 def get_today():
     return datetime.now().date().isoformat()
 
-logger = logging.getLogger("app") 
+logger = logging.getLogger("app")
 
 def note(df, title):
     msg = '\n\n'
@@ -39,9 +39,9 @@ class MyRiskFeatures(Compute, S3Mixin,
                      TransformSchemaMixin,
                      CheckpointMixin):
 
-    def __init__(self, *args, **kwargs): 
-        super().__init__(*args, **kwargs) 
-        self.name = "RiskFeatures" 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.name = "RiskFeatures"
 
         self.supported_extra_args = [
             {
@@ -55,7 +55,7 @@ class MyRiskFeatures(Compute, S3Mixin,
                 'description': "Whether checkpoints should be enabled",
                 'default': "False",
                 'required': False
-            },            
+            },
             {
                 'name': 'tolerance',
                 'description': "Risk tolerance",
@@ -67,12 +67,12 @@ class MyRiskFeatures(Compute, S3Mixin,
                 'description': "Evaluation score",
                 'default': 0.95,
                 'required': True,
-            },                        
+            },
         ]
-        
+
         self.outputs = {}
 
-        self.testdata = { 
+        self.testdata = {
             'data_root': os.path.join(os.environ['ENRICH_TEST'],
                                       self.name),
             'statedir': os.path.join(os.environ['ENRICH_TEST'],
@@ -85,7 +85,7 @@ class MyRiskFeatures(Compute, S3Mixin,
                     'catalog': "%(data_root)s/shared/datasets/Acme-schema.json",
 		        }
 	        },
-            'data': { 
+            'data': {
             }
         }
 
@@ -109,7 +109,7 @@ class MyRiskFeatures(Compute, S3Mixin,
 
         return args
 
-        
+
     def validate_input(self, what, state):
         """
         """
@@ -120,22 +120,22 @@ class MyRiskFeatures(Compute, S3Mixin,
 
     def update_state(self, state, sampledf, loandf):
 
-        framemgr = self.config.get_dataframe('pandas') 
-        
-        ################################################
-        ## => Update state 
-        ################################################
-        columns = {} 
-        for c in list(sampledf.columns): 
-            columns[c] = { 
-                'touch': self.name, # Who is introducing this column
-                'datatype': framemgr.get_generic_dtype(sampledf, c), # What is its type 
-                'description': self.get_column_description('lending_source', c) 
-            } 
+        framemgr = self.config.get_dataframe('pandas')
 
-        ## => Gather the update parameters 
-        updated_detail = { 
-            'df': sampledf, 
+        ################################################
+        ## => Update state
+        ################################################
+        columns = {}
+        for c in list(sampledf.columns):
+            columns[c] = {
+                'touch': self.name, # Who is introducing this column
+                'datatype': framemgr.get_generic_dtype(sampledf, c), # What is its type
+                'description': self.get_column_description('lending_source', c)
+            }
+
+        ## => Gather the update parameters
+        updated_detail = {
+            'df': sampledf,
             'transform': self.name,
             'frametype': 'pandas',
             'params': [
@@ -143,30 +143,30 @@ class MyRiskFeatures(Compute, S3Mixin,
                             'type': 'compute',
                             'columns': columns,
                         }
-            ], 
+            ],
             'history': [
-                # Add a log entry describing the change 
+                # Add a log entry describing the change
                 {
-                    'transform': self.name, 
-                    'log': 'Sampled input', 
+                    'transform': self.name,
+                    'log': 'Sampled input',
                 }
             ]
         }
-        
-        # Update the state. 
+
+        # Update the state.
         state.update_frame('lending_source', updated_detail, create=True)
 
-        columns = {} 
-        for c in list(loandf.columns): 
-            columns[c] = { 
+        columns = {}
+        for c in list(loandf.columns):
+            columns[c] = {
                 'touch': self.name, # Who is introducing this column
-                'datatype': framemgr.get_generic_dtype(loandf, c), # What is its type 
-                'description': self.get_column_description('loan_features', c) 
-            } 
+                'datatype': framemgr.get_generic_dtype(loandf, c), # What is its type
+                'description': self.get_column_description('loan_features', c)
+            }
 
-        ## => Gather the update parameters 
-        updated_detail = { 
-            'df': loandf, 
+        ## => Gather the update parameters
+        updated_detail = {
+            'df': loandf,
             'transform': self.name,
             'frametype': 'pandas',
             'params': [
@@ -175,26 +175,26 @@ class MyRiskFeatures(Compute, S3Mixin,
                             'columns': columns,
                             'description': "Lending features"
                         }
-            ], 
+            ],
             'history': [
-                # Add a log entry describing the change 
+                # Add a log entry describing the change
                 {
-                    'transform': self.name, 
-                    'log': 'Sampled input', 
+                    'transform': self.name,
+                    'log': 'Sampled input',
                 }
             ]
         }
-        
-        # Update the state. 
-        state.update_frame('loan_features', updated_detail, create=True)         
-    
-    def process(self, state): 
+
+        # Update the state.
+        state.update_frame('loan_features', updated_detail, create=True)
+
+    def process(self, state):
         """
-        Run the computation and update the state 
+        Run the computation and update the state
         """
         logger.debug("{} - process".format(self.name),
                      extra=self.config.get_extra({
-                         'transform': self.name 
+                         'transform': self.name
                      }))
 
         logger.debug("Parameters",
@@ -205,8 +205,8 @@ class MyRiskFeatures(Compute, S3Mixin,
 
         # Note this for later use..
         self.state = state
-        
-        # Update documentation 
+
+        # Update documentation
         self.documentation_from_catalog(catalog=self.args['catalog'],
                                         frames={
                                             'lending_source': {
@@ -216,21 +216,21 @@ class MyRiskFeatures(Compute, S3Mixin,
                                             'loan_features': {
                                                 'catalog': 'Acme',
                                                 'source': 'Lending'
-                                            }                                            
+                                            }
                                         })
 
         logger.info("Loaded documentation from catalog",
                      extra={
                          'transform': self.name,
-                     })        
-        
+                     })
+
         ###############################################
-        # => Initialize 
+        # => Initialize
         ###############################################
         lendingfile = self.get_file(self.args['lending'])
         df = pd.read_csv(lendingfile,
                          low_memory=False,
-                         #nrows=1000
+                         nrows=1000
                          )
         sampledf = df #.sample(100)
 
@@ -240,16 +240,18 @@ class MyRiskFeatures(Compute, S3Mixin,
                          'transform': self.name,
                          "data": msg,
                      })
-        
-        # Final output 
-        loandf = analysis(self, df) 
+
+        # Final output
+        loandf = analysis(self, df)
 
         msg = note(loandf, "Computed Features")
-        logger.debug("Computed features", 
+        logger.debug("Computed features",
                      extra={
                          'transform': self.name,
                          "data": msg,
                      })
+
+        state.make_note("Generated {} features".format(loandf.shape[1]))
 
         self.to_save = {
             'analysis': {
@@ -257,14 +259,14 @@ class MyRiskFeatures(Compute, S3Mixin,
                 'df': loandf
             }
         }
-        
+
         # Collect and document
-        self.update_state(state, sampledf, loandf) 
+        self.update_state(state, sampledf, loandf)
 
         ###########################################
-        # => Return 
+        # => Return
         ###########################################
-        return state 
+        return state
 
     def validate_results(self, what, state):
         """
@@ -302,5 +304,5 @@ class MyRiskFeatures(Compute, S3Mixin,
                 state.add_expectations(self, tablename, result)
             except NoExpectations:
                 pass
-    
-provider = MyRiskFeatures 
+
+provider = MyRiskFeatures

@@ -21,8 +21,8 @@ class DistributionCheck(ExpectationBase):
         result.add_result(self.name, self.description,
                           passed=True)
         return result
-    
-        
+
+
 expectations = [
     {
         'expectation': 'table_columns_exist',
@@ -37,7 +37,7 @@ expectations = [
         }
     },
     {
-        'expectation': 'feature_quality',
+        'expectation': 'distribution_check',
         'params': {
             'threshold': 30,
         },
@@ -45,5 +45,5 @@ expectations = [
             "frames": ['loan_features']
         }
     }
-    
+
 ]
