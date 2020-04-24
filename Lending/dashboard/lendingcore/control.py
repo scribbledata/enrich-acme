@@ -55,7 +55,7 @@ overview_spec = {
         {
             'name': "Next Visit",
             'category': 'Customer',
-            'owner': 'Valerie',
+            'owner': 'Rob',
             'description': 'Predict the next visit and probable need',
             'services': ['Pipeline', 'Notebook'],
             'datasets': ['TransactionProfile'],
@@ -65,7 +65,7 @@ overview_spec = {
         {
             'name': "Data Drift Monitoring",
             'category': 'Data Quality',
-            'owner': 'Valerie',
+            'owner': 'Rob',
             'description': 'Assess changes in scores',
             'services': ['Pipeline', 'Notebook'],
             'datasets': ['Drifter'],
@@ -77,17 +77,17 @@ overview_spec = {
         {
             'label': 'Catalog',
             'url': 'lendingcore:catalog:index',
-            "description": "Data Schemas and Notes"
+            "description": "Schema tracking and notes",
         },
         {
             'label': "Annotations",
             'url': 'lendingcore:annotations:index',
-            "description": "Data Labelling" 
+            "description": "Customizable annotations" 
         },
         {
             'label': "SDK",
             'url': '/docs/sdk/index.html',
-            "description": "Developer Interface" 
+            "description": "Enrich Developer SDK (Python) and API" 
         },                
     ],
     'operate': [

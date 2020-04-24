@@ -7,8 +7,9 @@ from enrichapp.dashboard.featureserve.urls import featureserve_urlpatterns
 from enrichapp.dashboard.annotations.urls import annotations_urlpatterns
 from enrichapp.dashboard.audit.urls import audit_urlpatterns
 from enrichapp.dashboard.campaigns.urls import campaign_urlpatterns
+from enrichapp.dashboard.compare.urls import compare_urlpatterns
 
-from . import views, catalog, marketplace, overview, control, featureserve, annotations, audit, search
+from . import views, catalog, marketplace, overview, control, featureserve, annotations, audit, search, compare
 
 app_name = "lendingcore"
 
@@ -83,5 +84,14 @@ urlpatterns += [
                                 namespace="control"),
         {
             'spec': control.get_spec()
+        })
+]
+
+comparespec = compare.get_spec()
+urlpatterns += [
+    url(r'^compare/', include(compare_urlpatterns,
+                               namespace="compare"),
+        {
+            'spec': comparespec
         })
 ]
