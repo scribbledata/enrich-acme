@@ -6,7 +6,7 @@ from . import models, forms
 logger = logging.getLogger('app')
 
 dbs = [
-    FakeModelData(namespace="fake")
+    # FakeModelData(namespace="fake")
 ]
 
 # Collect other sources...

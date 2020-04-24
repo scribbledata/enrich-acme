@@ -18,7 +18,7 @@ class MyAcmeIndexer(IndexerBase):
             'statedir': os.path.join(os.environ['ENRICH_TEST'],
                                      self.name, 'state'),
             'conf': {
-		"args": {
+		        "args": {
                     "db": "%(data_root)s/shared/audit/index.tinydb",
                     "collections": "datasets",
                     "include_runs": True,

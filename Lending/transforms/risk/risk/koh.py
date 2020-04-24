@@ -6,8 +6,42 @@ import re
 import numpy as np
 import pandas as pd
 from datetime import datetime
+import logging
 
-def analysis(df):
+logger = logging.getLogger('app')
+
+def checkpoint(transform, df, checkpoint_name, notes=None):
+
+    msg ="\n\nCheckpoint {}\n".format(checkpoint_name)
+
+    checkpoints = transform.args['checkpoints']
+    if not checkpoints:
+        msg += "    Present but not enabled in this run"
+        return msg
+
+    filename = "%(output)s/%(runid)s/checkpoints/{}.pq".format(checkpoint_name)
+
+    extra_metadata = {}
+    if notes is not None:
+        extra_metadata['notes'] = notes
+
+    metadata = transform.checkpoint(df,
+                                    filename=filename,
+                                    extra_metadata=extra_metadata)
+
+
+    msg += "   path: {}\n".format(metadata['filename'])
+    msg += "   size: {}\n".format(metadata['size'])
+    msg += "   rows: {}\n".format(metadata['rows'])
+    msg += "   columns: {}\n".format(metadata['columns'])
+    if notes is not None:
+        msg += "    " + notes
+
+
+    return msg
+
+
+def analysis(transform, df):
     """
     Loan dataframe 
     """
@@ -28,6 +62,14 @@ def analysis(df):
                 sorted([x for x in loan.columns[2:] if re.match('.*_d$', x)]) + \
                 sorted([x for x in loan.columns[2:] if not re.match('.*_d$', x)])]
 
+    name = '1_LOAN_POLICY_FILTERED'
+    msg = checkpoint(transform, loan, name,
+                     "Filtered to meet the credit policy")
+    logger.debug("Checkpoint: " + name,
+                 extra={
+                     'transform': transform.name,
+                     'data': msg
+                 })
     # Convert dates using python datetime instead of pandas because pandas datetimes are not very good
     loan['int_rate'] = loan['int_rate'].map(lambda x: float(x.strip().strip('%'))/100)
     loan.ix[~loan['revol_util'].isnull(), 'revol_util'] = loan.ix[~loan['revol_util'].isnull(), 'revol_util'].map(lambda x: float(x.strip().strip('%'))/100)

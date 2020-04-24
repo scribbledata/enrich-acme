@@ -7,39 +7,41 @@ config = {
     "output": "%(data_root)s/output/%(name)s",
     "doc": "%(customer_root)s/docs/test.md",
     "log": "%(output)s/%(runid)s/log.json",
+    "enable_extra_args": True,
     "imports": [
     ],
     "paths": {
-	"libraries": [
-	    "%(customer_root)s/transforms",
-	    "%(customer_root)s/pipelines/lib",
+	    "libraries": [
+	        "%(customer_root)s/transforms",
+	        "%(customer_root)s/pipelines/lib",
         ],
-	"packages": [
-	    "%(customer_root)s/pkg",
+	    "packages": [
+	        "%(customer_root)s/pkg",
             "%(enrich_customers_dir)s/scribble/Discover/pkg"
-	]
+	    ]
     },
     "notification": {
-	"enable": True,
-	"email": [
+	    "enable": True,
+	    "email": [
         ]
     },
     "transforms": {
-	"enabled": [
-	    {
-		"transform": "AcmeIndexer",
-		"enable": True,
+	    "enabled": [
+	        {
+		        "transform": "AcmeIndexer",
+		        "enable": True,
                 "dependencies": {
                 },
-	        "args": {
+	            "args": {
                     "db": "%(data_root)s/shared/audit/index.tinydb",
+                    "full_build": False,                    
                     "collections": "datasets",
                     "include_runs": True,
                     "datasets": [
                     ]
-		}
-	    }
-	]
+		        }
+	        }
+	    ]
     },
     "skins": []
 }

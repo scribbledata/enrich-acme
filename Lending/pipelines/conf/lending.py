@@ -1,3 +1,8 @@
+from datetime import datetime
+
+def get_today():
+    return datetime.now().date().isoformat()
+
 config = {
     "name": "LendingAnalysis",
     "description": "Analyze lending data",
@@ -7,6 +12,7 @@ config = {
     "output": "%(data_root)s/output/%(name)s",
     "doc": "%(customer_root)s/docs/loan.md",
     "log": "%(output)s/%(runid)s/log.json",
+    "enable_extra_args": True,
     "imports": [
     ],
     "paths": {
@@ -17,29 +23,32 @@ config = {
             "%(enrich_customers_dir)s/scribble/Discover/transforms"
 
         ],
-	"packages": [
-	    "%(customer_root)s/pkg",
+	    "packages": [
+	        "%(customer_root)s/pkg",
             "%(enrich_customers_dir)s/scribble/Campaigns/pkg"
-	]
+	    ]
     },
     "notification": {
-	"enable": False,
-	"email": [
-	],
-	"errors": "disabled"
+	    "enable": False,
+	    "email": [
+	    ],
+	    "errors": "disabled"
     },
     "transforms": {
-	"enabled": [
-	    {
-		"transform": "RiskFeatures",
-		"enable": True,
+	    "enabled": [
+	        {
+		        "transform": "RiskFeatures",
+		        "enable": True,
                 "dependencies": {
                 },
-	        "args": {
+	            "args": {
+                    'rundate': get_today(),
+                    'tolerance': 0.6,
+                    'quality': 0.95,
                     'lending': "%(data_root)s/shared/datasets/LoanStats3a.csv",
                     'catalog': "%(data_root)s/shared/datasets/Acme-schema.json"
-		}
-	    },
+		        }
+	        },
             {
                 "transform": "CampaignMeta",
                 "enable": True,
