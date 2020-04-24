@@ -21,9 +21,9 @@ config = {
 	    ]
     },
     "notification": {
-	    "enable": True,
-	    "email": [
-        ]
+	    "enable": False,
+	    "email": [],
+        "errors": "disabled"
     },
     "transforms": {
 	    "enabled": [
