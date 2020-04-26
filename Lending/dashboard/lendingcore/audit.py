@@ -8,11 +8,12 @@ from enrichapp.discover import audit
 
 logger = logging.getLogger('app')
 
-dbpath = os.path.expandvars("${ENRICH_DATA}/acme/Lending/shared/audit/index.tinydb")
+dbpath = os.path.expandvars("${ENRICH_DATA}/acme/Lending/shared/audit/index.sqlite")
 
 config = {
-    "collection": "datasets", 
-    "db": audit.backends.BackendTinyDB({
+    "collection": "datasets",
+    'dbtype': 'sqlite',
+    "db": audit.backends.BackendSQLiteDB({
         'db': dbpath
     })
 }

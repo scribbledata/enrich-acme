@@ -33,7 +33,8 @@ config = {
                 "dependencies": {
                 },
 	            "args": {
-                    "db": "%(data_root)s/shared/audit/index.tinydb",
+                    "db": "%(data_root)s/shared/audit/index.sqlite",
+                    'dbtype': 'sqlite',
                     "full_build": False,                    
                     "collections": "datasets",
                     "include_runs": True,
