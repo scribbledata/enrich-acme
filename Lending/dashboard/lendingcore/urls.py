@@ -20,7 +20,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    url(r'^catalog/', include(catalog_urlpatterns,
+    url(r'^catalog/', include((catalog_urlpatterns,'catalog'),
                               namespace="catalog"),
         {
             'spec': catalog.get_spec()
@@ -28,7 +28,7 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    url(r'^marketplace/', include(marketplace_urlpatterns,
+    url(r'^marketplace/', include((marketplace_urlpatterns,"marketplace"),
                                   namespace="marketplace"),
         {
             'spec': marketplace.get_spec()
@@ -36,7 +36,7 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    url(r'^featureserve/', include(featureserve_urlpatterns,
+    url(r'^featureserve/', include((featureserve_urlpatterns, "featureserve"),
                                    namespace="featureserve"),
         {
             'spec': featureserve.get_spec()
@@ -46,7 +46,7 @@ urlpatterns += [
 
 annospec = annotations.get_annotations_spec()
 urlpatterns += [
-    url(r'^annotations/', include(annotations_urlpatterns,
+    url(r'^annotations/', include((annotations_urlpatterns,"annotations"),
                                 namespace="annotations"),
     {
             'spec': annospec
@@ -55,7 +55,7 @@ urlpatterns += [
 
 auditspec = audit.get_spec()
 urlpatterns += [
-    url(r'^audit/', include(audit_urlpatterns,
+    url(r'^audit/', include((audit_urlpatterns,"audit"),
                               namespace="audit"),
         {
             'spec': auditspec
@@ -64,7 +64,7 @@ urlpatterns += [
 
 spec = search.get_loan_spec()
 urlpatterns += [
-    url(r'^search/loan', include(campaign_urlpatterns,
+    url(r'^search/loan', include((campaign_urlpatterns,"campaign"),
                                  namespace="loan"),
         {
             'spec': spec
@@ -72,7 +72,7 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    url(r'^overview/', include(overview_urlpatterns,
+    url(r'^overview/', include((overview_urlpatterns,"overview"),
                                namespace="overview"),
         {
             'spec': overview.get_spec()
@@ -80,7 +80,7 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    url(r'^control/', include(control_urlpatterns,
+    url(r'^control/', include((control_urlpatterns,"control"),
                                 namespace="control"),
         {
             'spec': control.get_spec()
@@ -89,7 +89,7 @@ urlpatterns += [
 
 comparespec = compare.get_spec()
 urlpatterns += [
-    url(r'^compare/', include(compare_urlpatterns,
+    url(r'^compare/', include((compare_urlpatterns,"compare"),
                                namespace="compare"),
         {
             'spec': comparespec
