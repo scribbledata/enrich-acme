@@ -230,6 +230,9 @@ class MyRiskFeatures(Compute, S3Mixin,
         lendingfile = self.get_file(self.args['lending'])
         df = pd.read_csv(lendingfile,
                          low_memory=False,
+                         dtype={
+                             'member_id': str,
+                         }
                          #nrows=1000
                          )
         sampledf = df #.sample(100)
