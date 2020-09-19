@@ -9,7 +9,7 @@ from dateutil import parser as dateparser
 import logging
 from enrichsdk.quality import *
 
-from enrichsdk.contrib.catalog import TransformSchemaMixin
+from enrichsdk.contrib.lib.catalog import TransformSchemaMixin
 from .koh import analysis
 
 thisdir = os.path.abspath(os.path.dirname(__file__))
