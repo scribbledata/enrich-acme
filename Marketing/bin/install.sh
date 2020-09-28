@@ -10,6 +10,12 @@ then
    exit
 fi
 
+if [ -z "$ENRICH_DATA" ];
+then
+   export ENRICH_DATA="$ENRICH_ROOT/data"
+   export ENRICH_TEST="$ENRICH_ROOT/test"
+fi
+
 DATA_ROOT="$ENRICH_DATA/acme/Marketing"
 SHARED="$DATA_ROOT/shared/acme"
 SALES_TEST_SHARED="$ENRICH_TEST/CarSales/shared/acme"
