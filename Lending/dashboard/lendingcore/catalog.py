@@ -13,12 +13,15 @@ def get_spec():
             'datasource': DataSource,
             'column': Column,
             'attachment': Attachment,
-
+            'role': Role,
+            'visibilitymap': VisibilityMap
         },
         'forms': {
             'catalog': CatalogForm,
             'attachment': AttachmentForm,
             'datasource': DataSourceForm,
-            'column': ColumnForm
+            'column': ColumnForm,
+            'role': RoleForm,
+            'roleselect': RoleSelectForm
         }
     }

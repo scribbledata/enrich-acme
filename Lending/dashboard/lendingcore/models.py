@@ -14,6 +14,12 @@ class DataSource(DataSourceBase):
 class Column(ColumnBase):
     pass
 
+class Role(RoleBase):
+    pass
+
+class VisibilityMap(VisibilityMapBase):
+    pass
+
 class Comment(CommentBase):
     pass
 

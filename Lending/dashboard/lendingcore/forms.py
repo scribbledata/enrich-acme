@@ -11,7 +11,6 @@ class AttachmentForm(AttachmentFormBase):
     class Meta(AttachmentFormBase.Meta):
         model = Attachment
 
-
 class DataSourceForm(CatalogFormBase):
     class Meta(DataSourceFormBase.Meta):
         model = DataSource
@@ -19,6 +18,14 @@ class DataSourceForm(CatalogFormBase):
 class ColumnForm(ColumnFormBase):
     class Meta(ColumnFormBase.Meta):
         model = Column
+
+class RoleForm(RoleFormBase):
+    class Meta(RoleFormBase.Meta):
+        model = Role
+
+class RoleSelectForm(RoleSelectFormBase):
+    class Meta(RoleSelectFormBase.Meta):
+        model = Role
 
 class CommentForm(CommentFormBase):
     class Meta(CommentFormBase.Meta):
