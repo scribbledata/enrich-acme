@@ -9,5 +9,17 @@
         "author": "Venkata Pingali",
         "email": "pingali@scribbledata.io",
         "giturl": "https://github.com/pingali/enrich-acme"
-    }
+    },
+    "applications": [
+	{
+	    "name": "JIRA",
+	    "description": "Ticket metadata analysis",
+	    "url": "team:jira"
+	},
+	{
+	    "name": "ServiceDesk",
+	    "description": "Support Data Analysis",
+	    "url": "team:index"
+	}
+    ]
 }
