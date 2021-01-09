@@ -1,4 +1,5 @@
 {
+    "notes": "For demo purposes",
     "enable": true,
     "org": {
         "customer": "acme",
