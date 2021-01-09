@@ -2,7 +2,7 @@
     "org": {
         "customer": "acme",
         "name": "Lending",
-        "description": "Lending Features",
+        "description": "Lending Features (Staging)",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Acme-logo.png/800px-Acme-logo.png"
     },
     "repository": {
