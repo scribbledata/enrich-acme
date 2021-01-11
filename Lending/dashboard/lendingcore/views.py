@@ -12,12 +12,4 @@ def start(request):
 
 def index(request):
     url = reverse('lendingcore:control:index')
-    print("URL", url)
     return HttpResponseRedirect(url)
-
-    #return render(request,
-    #              'lendingcore/index.html',
-    #              {
-    #                  'customer': scribblelib.find_my_customer(__file__),
-    #
-    #              })

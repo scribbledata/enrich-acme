@@ -15,6 +15,7 @@ from django.http import HttpResponseRedirect, Http404
 from django.contrib import messages
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
+from users.decorators import log_activity
 from enrichapp.dashboard.campaigns import lib as scribblelib
 
 logger = logging.getLogger('app')
@@ -27,6 +28,7 @@ def index(request):
 
                   })
 
+@log_activity("jira", nature="application")
 def jira(request):
 
     try: 
