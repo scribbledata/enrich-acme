@@ -1,21 +1,21 @@
 config = {
     "name": "TeamPerformance",
     "description": "Analyze jira data",
-    "customer_root": "%(enrich_customers_dir)s/acme/IT", 
+    "usecase_root": "%(enrich_customers_dir)s/acme/IT", 
     "data_root": "%(enrich_data_dir)s/acme/IT", 
     "runid": "teamperf-%Y%m%d-%H%M%S",
     "output": "%(data_root)s/output/%(name)s", 
-    "doc": "%(customer_root)s/docs/loan.md",     
+    "doc": "%(usecase_root)s/docs/loan.md",     
     "log": "%(output)s/%(runid)s/log.json", 
     "imports": [
     ],
     "paths": { 
 	"libraries": [
-	    "%(customer_root)s/transforms",
-	    "%(customer_root)s/pipelines/lib"
+	    "%(usecase_root)s/transforms",
+	    "%(usecase_root)s/pipelines/lib"
         ],
 	"packages": [
-	    "%(customer_root)s/pkg"
+	    "%(usecase_root)s/pkg"
 	]
     },
     "notification": {

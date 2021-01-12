@@ -6,25 +6,25 @@ def get_today():
 config = {
     "name": "LendingAnalysis",
     "description": "Analyze lending data",
-    "customer_root": "%(enrich_customers_dir)s/acme/Lending",
+    "usecase_root": "%(enrich_customers_dir)s/acme/Lending",
     "data_root": "%(enrich_data_dir)s/acme/Lending",
     "runid": "lending_analysis-%Y%m%d-%H%M%S",
     "output": "%(data_root)s/output/%(name)s",
-    "doc": "%(customer_root)s/docs/loan.md",
+    "doc": "%(usecase_root)s/docs/loan.md",
     "log": "%(output)s/%(runid)s/log.json",
     "enable_extra_args": True,
     "imports": [
     ],
     "paths": {
 	"libraries": [
-	    "%(customer_root)s/transforms",
-	    "%(customer_root)s/pipelines/lib",
+	    "%(usecase_root)s/transforms",
+	    "%(usecase_root)s/pipelines/lib",
             "%(enrich_customers_dir)s/scribble/Contrib/transforms",
             "%(enrich_customers_dir)s/scribble/Discover/transforms"
 
         ],
 	    "packages": [
-	        "%(customer_root)s/pkg",
+	        "%(usecase_root)s/pkg",
             "%(enrich_customers_dir)s/scribble/Campaigns/pkg"
 	    ]
     },
