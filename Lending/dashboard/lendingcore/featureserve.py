@@ -1,11 +1,11 @@
-from enrichapp.dashboard.campaigns import lib as scribblelib
+from enrichsdk.lib.customer import find_usecase
 
 def get_spec():
 
     return {
         'name': 'FeatureServe',
         'description': "Serve", 
-        'customer': scribblelib.find_my_customer(__file__),
+        'usecase': find_usecase(__file__),
         "featurestore": {
             "nature": "es",
             "cred": "es",

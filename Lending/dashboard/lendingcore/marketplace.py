@@ -1,5 +1,5 @@
 import logging 
-from enrichapp.dashboard.campaigns import lib as scribblelib
+from enrichsdk.lib.customer import find_usecase
 from enrichapp.discover.marketplace import * 
 from . import models, forms
 
@@ -29,7 +29,7 @@ def get_spec():
     return {
         'name': 'Marketplace',
         'description': "Feature Marketplace",
-        'customer': scribblelib.find_my_customer(__file__),
+        'usecase': find_usecase(__file__),
         'modeldata': ModelDataManager(dbs=dbs),
         'models': {
             'comment': models.Comment,

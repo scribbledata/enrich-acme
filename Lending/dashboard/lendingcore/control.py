@@ -1,4 +1,4 @@
-from enrichapp.dashboard.campaigns import lib as scribblelib
+from enrichsdk.lib.customer import find_usecase
 
 overview_spec = {
     'name': 'Acme Intelligence Platform (AIP)',
@@ -9,7 +9,7 @@ overview_spec = {
     <p class='text-center'>AIP Product Owner is <a href='mailto:bill.preston@acmeinc.com'>Bill Preston</a>, and is managed by <a href='mailto:sam.jacobs@acmeinc.com'>Sam Jacobs</a>. They are being helped by <a href="https://www.scribbledata.io">Scribble Team</a>.</p>
 
 <p class='text-center'>Please reachout to <a href='mailto:aip@acmeinc.com'>AIP Team</a> or <a href='mailto:support@scribbledata.io'>Scribble Support</a> for technical help</p>""",
-    'customer': scribblelib.find_my_customer(__file__),
+    'usecase': find_usecase(__file__),
     'force_list': [],
     'usecases': [ 
         {

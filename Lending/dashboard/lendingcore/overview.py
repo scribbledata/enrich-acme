@@ -1,9 +1,9 @@
-from enrichapp.dashboard.campaigns import lib as scribblelib
+from enrichsdk.lib.customer import find_usecase
 
 overview_spec = {
     'name': 'Marketplace',
     'description': "Project Overview",
-    'customer': scribblelib.find_my_customer(__file__),
+    'usecase': find_usecase(__file__),
     'force_list': ['core', 'search', 'audit'],
     'marketplace': [
         {

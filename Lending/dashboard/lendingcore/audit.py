@@ -3,7 +3,7 @@ import copy
 import json 
 import logging 
 
-from enrichapp.dashboard.campaigns import lib as scribblelib 
+from enrichsdk.lib.customer import find_usecase 
 from enrichapp.discover import audit
 
 logger = logging.getLogger('app')
@@ -19,7 +19,9 @@ config = {
 }
 
 search_spec = {
-    'customer': scribblelib.find_my_customer(__file__),
+    'name': "Provenance",
+    'description': "Search historical information",
+    'usecase': find_usecase(__file__),
     "indexer": audit.indexer.BaseIndexer(config),
 }
 

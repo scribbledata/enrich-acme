@@ -16,7 +16,7 @@ from django.contrib import messages
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from users.decorators import log_activity
-from enrichapp.dashboard.campaigns import lib as scribblelib
+from enrichsdk.lib.customer import find_usecase 
 
 logger = logging.getLogger('app')
 
@@ -24,7 +24,7 @@ def index(request):
     return render(request,
                   'team/index.html',
                   {
-                      'customer': scribblelib.find_my_customer(__file__),
+                      'usecase': find_usecase(__file__),
 
                   })
 
@@ -87,7 +87,7 @@ def jira(request):
     return render(request,
                   'team/jira.html',
                   {
-                      'customer': scribblelib.find_my_customer(__file__),
+                      'usecase': find_usecase(__file__),
                       'members': members,
                       'projects': projects,
                       'teams': cleaned_teams, 
