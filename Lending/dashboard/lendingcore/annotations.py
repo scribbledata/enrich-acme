@@ -1,4 +1,4 @@
-from enrichapp.dashboard.campaigns import lib as scribblelib
+from enrichsdk.lib.customer import find_usecase
 
 from .models import (AnnotationModel,
                      EntryModel,
@@ -13,7 +13,7 @@ def get_annotations_spec():
     annotations_spec = {
         'name': "Annotations",
         "description": "Labelling data",
-        'customer': scribblelib.find_my_customer(__file__),
+        'usecase': find_usecase(__file__),
         'models': {
             'annotation': AnnotationModel,
             'entry': EntryModel,

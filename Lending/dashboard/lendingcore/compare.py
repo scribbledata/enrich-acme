@@ -5,7 +5,7 @@ import traceback
 import logging 
 import pandas as pd 
 
-from enrichapp.dashboard.campaigns import lib as scribblelib 
+from enrichsdk.lib.customer import find_usecase 
 from enrichapp.quality.compare import SimpleComparator 
 
 logger = logging.getLogger('app')
@@ -13,7 +13,7 @@ logger = logging.getLogger('app')
 comparator = SimpleComparator({})
 
 search_spec = {
-    'customer': scribblelib.find_my_customer(__file__),
+    'usecase': find_usecase(__file__),
     'comparables': [
         {
             'config1': {

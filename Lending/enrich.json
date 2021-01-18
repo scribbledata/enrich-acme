@@ -11,5 +11,12 @@
         "author": "Venkata Pingali",
         "email": "pingali@scribbledata.io",
         "giturl": "https://github.com/pingali/enrich-acme"
-    }
+    },
+    "applications":[
+	{
+	    "name": "Lending Dashboard",
+	    "description": "Lending Dashboard",
+	    "url": "lendingcore:index"
+	}
+    ]
 }

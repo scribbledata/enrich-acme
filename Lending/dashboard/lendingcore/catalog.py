@@ -1,4 +1,4 @@
-from enrichapp.dashboard.campaigns import lib as scribblelib
+from enrichsdk.lib.customer import find_usecase
 from .models import *
 from .forms import *
 
@@ -7,7 +7,7 @@ def get_spec():
     return {
         'name': 'Catalog',
         'description': "Catalog for LendingCore Projects",
-        'customer': scribblelib.find_my_customer(__file__),
+        'usecase': find_usecase(__file__),
         'models': {
             'catalog': Catalog,
             'datasource': DataSource,

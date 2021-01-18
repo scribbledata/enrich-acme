@@ -3,7 +3,7 @@ import copy
 import json
 import logging
 
-from enrichapp.dashboard.campaigns import lib as scribblelib
+from enrichsdk.lib.customer import find_usecase
 
 logger = logging.getLogger('app')
 
@@ -13,7 +13,8 @@ searchdir = os.path.join(os.environ['ENRICH_DATA'],
 
 campaign_spec = {
     'name': "Loan Dataset",
-    'customer': scribblelib.find_my_customer(__file__),
+    'description': "Loan Dataset",
+    'usecase': find_usecase(__file__),
     'raw_dataset_root': os.path.join(os.environ['ENRICH_DATA'],
                                      'acme', 'Lending',
                                      'shared', 'datasets'),
