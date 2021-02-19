@@ -17,11 +17,11 @@ search_spec = {
     'comparables': [
         {
             'config1': {
-                'customer': 'Lending',
+                'usecase': 'Lending',
                 'pipeline': 'LendingAnalysis'
             },
             'config2': {
-                'customer': 'Lending',
+                'usecase': 'Lending',
                 'pipeline': 'LendingAnalysis'                
             },            
             'comparator': comparator 
