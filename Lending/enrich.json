@@ -16,7 +16,7 @@
 	{
 	    "name": "Lending Dashboard",
 	    "description": "Lending Dashboard",
-	    "url": "lendingcore:index"
+	    "url": "lendingcore:control:index"
 	}
     ]
 }

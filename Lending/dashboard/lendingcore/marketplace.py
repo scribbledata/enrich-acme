@@ -15,7 +15,7 @@ sources = {
 }
 
 for dbname, picklepath in sources.items():
-    try: 
+    try:
         db = ProfileModelDatabase(profilefile=picklepath, 
                                   namespace=dbname, 
                                   params={}) 
