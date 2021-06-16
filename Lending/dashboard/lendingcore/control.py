@@ -132,11 +132,6 @@ overview_spec = {
         },        
     ],
     "monitor": [
-        {
-            'label': 'Data Drift',
-            'url': 'lendingcore:marketplace:index',
-            'description': 'Compute changes in data',
-        }
     ]
 }
 
