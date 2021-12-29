@@ -11,6 +11,9 @@
         "email": "pingali@scribbledata.io",
         "giturl": "https://github.com/pingali/enrich-acme"
     },
+    "installed_apps": [
+	"team.apps.TeamConfig"
+    ],
     "applications": [
 	{
 	    "name": "JIRA",

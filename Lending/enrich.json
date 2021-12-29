@@ -12,11 +12,17 @@
         "email": "pingali@scribbledata.io",
         "giturl": "https://github.com/pingali/enrich-acme"
     },
+    "installed_apps": [
+	"lendingcore.apps.LendingConfig"
+    ],
     "applications":[
 	{
 	    "name": "Lending Dashboard",
 	    "description": "Lending Dashboard",
 	    "url": "lendingcore:control:index"
 	}
-    ]
+    ],
+    "installed_apps": [
+	"lendingcore.apps.LendingConfig"
+     ]
 }

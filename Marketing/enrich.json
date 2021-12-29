@@ -9,6 +9,10 @@
      "repository": { 
          "author": "John Smith", 
          "email": "john.smith@acme.com", 
-           "giturl": "https://github.com/acme/enrich-acme.git" 
-     }
+           "giturl": "https://github.com/pingali/enrich-acme.git" 
+     },
+     "installed_apps": [
+         "acmedash.apps.MarketingConfig"
+     ]
+
 }

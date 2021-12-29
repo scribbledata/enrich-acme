@@ -1,6 +1,6 @@
-import logging 
+import logging
 from enrichsdk.lib.customer import find_usecase
-from enrichapp.discover.marketplace import * 
+from enrichapp.discover.marketplace import *
 from . import models, forms
 
 logger = logging.getLogger('app')
@@ -15,13 +15,17 @@ sources = {
 }
 
 for dbname, picklepath in sources.items():
+
     try:
-        db = ProfileModelDatabase(profilefile=picklepath, 
-                                  namespace=dbname, 
-                                  params={}) 
+        if not os.path.exists(picklepath):
+            continue
+
+        db = ProfileModelDatabase(profilefile=picklepath,
+                                  namespace=dbname,
+                                  params={})
         dbs.append(db)
     except:
-        logger.exception("Unable to load {} feature database".format(dbname))
+        pass
 
 
 def get_spec():

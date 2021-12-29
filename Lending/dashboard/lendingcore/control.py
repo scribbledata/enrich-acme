@@ -11,7 +11,7 @@ overview_spec = {
 <p class='text-center'>Please reachout to <a href='mailto:aip@acmeinc.com'>AIP Team</a> or <a href='mailto:support@scribbledata.io'>Scribble Support</a> for technical help</p>""",
     'usecase': find_usecase(__file__),
     'force_list': [],
-    'usecases': [ 
+    'apps': [ 
         {
             'name': "Scoring",
             'category': 'Product Listing',
