@@ -14,6 +14,9 @@ class DataSource(DataSourceBase):
 class Column(ColumnBase):
     pass
 
+class Embed(EmbedBase):
+    pass
+
 class Role(RoleBase):
     pass
 

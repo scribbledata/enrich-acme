@@ -12,6 +12,7 @@ def get_spec():
             'catalog': Catalog,
             'datasource': DataSource,
             'column': Column,
+            'embed': Embed,
             'attachment': Attachment,
             'role': Role,
             'visibilitymap': VisibilityMap
@@ -21,6 +22,7 @@ def get_spec():
             'attachment': AttachmentForm,
             'datasource': DataSourceForm,
             'column': ColumnForm,
+            'embed': EmbedForm,
             'role': RoleForm,
             'roleselect': RoleSelectForm
         }

@@ -19,6 +19,10 @@ class ColumnForm(ColumnFormBase):
     class Meta(ColumnFormBase.Meta):
         model = Column
 
+class EmbedForm(EmbedFormBase):
+    class Meta(EmbedFormBase.Meta):
+        model = Embed        
+
 class RoleForm(RoleFormBase):
     class Meta(RoleFormBase.Meta):
         model = Role
