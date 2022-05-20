@@ -13,6 +13,7 @@ logger = logging.getLogger('app')
 comparator = SimpleComparator({})
 
 search_spec = {
+    "name": "Compare Runs",
     'usecase': find_usecase(__file__),
     'comparables': [
         {
