@@ -34,7 +34,7 @@
 			"enable": true,
 			"name": "Shared",
 			"src": "%(enrich_root)s/shared/", 
-			"dst": "backup/%(node)s/bydate/%(datetime)s/shared/"
+			"dst": "backup/%(node)s/shared/"
 		    }
 		],
 		"gcp": {
