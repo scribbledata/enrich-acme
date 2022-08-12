@@ -35,10 +35,24 @@ config = {
 	            "args": {
                     "db": "%(data_root)s/shared/audit/index.sqlite",
                     'dbtype': 'sqlite',
-                    "full_build": False,                    
+                    "full_build": False,
                     "collections": "datasets",
-                    "include_runs": True,
+                    "include_runs": False,
                     "datasets": [
+                        {
+                            "enable": True,
+                            "type": "local",
+                            'root': "%(enrich_data_dir)s/acme/Lending/shared",
+                            "files": ["pq", "sqlite",
+                                      "json","csv", "tsv", "csv.gz", "tsv.gz"]
+                        },
+                        {
+                            "enable": True,
+                            "type": "local",
+                            'root': "%(enrich_data_dir)s/scribble/Contrib/shared",
+                            "files": ["pq", "sqlite",
+                                      "json","csv", "tsv", "csv.gz", "tsv.gz"]
+                        }
                     ]
 		        }
 	        }
