@@ -30,7 +30,7 @@ class MyAcmeIndexer(IndexerBase):
                         {
                             "type": "s3",
                             'cred': "demouser",
-                            'root': "scribble-demodata/hopscotch/production",
+                            'root': "scribble-demodata/testdata",
                             "files": ["json","csv", "log"]
                         }
                     ]

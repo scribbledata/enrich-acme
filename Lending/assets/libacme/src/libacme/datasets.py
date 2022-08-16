@@ -24,18 +24,18 @@ datasets = []
 ############################################
 # Custom Datasets
 ############################################
-for name,desc, path in [
-        ("Cars", "Cars", "%(enrich_data_dir)s/scribble/Contrib/shared/Misc/cars.csv"),
-        ("LoanStats", "Loan Stats", "%(enrich_data_dir)s/acme/Lending/shared/datasets/LoanStats3a.csv")
+for name,desc, localpath, s3path in [
+        ("Cars", "Cars", "%(enrich_data_dir)s/scribble/Contrib/shared/Misc/cars.csv", "scribble-demodata/testdata/Misc/cars.csv"),
+        ("LoanStats", "Loan Stats", "%(enrich_data_dir)s/acme/Lending/shared/datasets/LoanStats3a.csv", "scribble-demodata/testdata/Lending/LoanStats3a.csv")
 ]:
     d = Dataset({
         "name": name,
         "description": desc,
         "paths": [
             {
-                "nature": "local",
+                "nature": "s3",
                 "name": "default",
-                "path": path,
+                "path": s3path,
             },
         ],
         "match": {

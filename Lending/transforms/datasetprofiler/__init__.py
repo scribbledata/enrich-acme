@@ -39,13 +39,15 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
             'inputdir': os.environ['ENRICH_TEST'],
             'conf': {
                 'args': {
-                    "indexdb": "%(data_root)s/shared/audit/index.sqlite",                    
+                    "cred": "demouser",
+                    "indexdb": "%(data_root)s/shared/audit/index.sqlite",
                     "target": "%(data_root)s/shared/marketplace/datasetprofiles.pickle",
                     "extra": {
+                        's3root': 'scribble-demodata',
                         'enrich_data_dir': '/home/ubuntu/enrich/data',
                         'node': 'demo.scribbledata.io',
-                        'remote_data_root': '/home/ubuntu/enrich'            
-                    }                    
+                        'remote_data_root': '/home/ubuntu/enrich'
+                    }
                 }
             },
             'data': {
@@ -73,8 +75,10 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
         # Path
         args['target'] = self.get_file(args['target'])
 
-        #
-        
+        #s3 access
+        cred = self.get_credentials(args['cred'])
+        args['s3'] = self.get_s3_handle(cred)
+
         return args
 
     def get_datasets(self):
@@ -99,6 +103,7 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
     def get_modeldata_input(self, dataset):
 
         # Get s3 handle..
+        s3 = self.args['s3']
         description = dataset.description
 
         extra = self.args['extra']
@@ -112,9 +117,9 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
         searchpaths = []
         for detail in paths:
             resolved = dataset.get_path(detail['name'],   resolve=extra)
+            if detail['nature'] == 's3':
+                backuppath = resolved
             searchpaths.append(resolved)
-
-        print(searchpaths)
 
         # Now search..
         items = self.search_sqlite(searchpaths)
@@ -169,11 +174,10 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
                 if skip:
                     continue
 
-                # 
+                #
                 if path.startswith(extra['enrich_data_dir']):
                     path = path.replace(extra['enrich_data_dir'], local_enrich_data_dir)
 
-                print("Looking for", path)
                 # Check for size..
                 sample = None
                 if ((source == 'fs') and (os.path.exists(path))):
