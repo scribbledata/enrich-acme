@@ -35,7 +35,7 @@ for name,desc, localpath, s3path in [
             {
                 "nature": "s3",
                 "name": "default",
-                "path": s3path,
+                "path": os.path.dirname(s3path),
             },
         ],
         "match": {
