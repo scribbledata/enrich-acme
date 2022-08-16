@@ -41,6 +41,14 @@ config = {
                     "datasets": [
                         {
                             "enable": True,
+                            "type": "s3",
+                            'cred': "demouser",
+                            'root': "scribble-demodata/testdata",
+                            "files": ["pq", "sqlite",
+                                      "json","csv", "tsv", "csv.gz", "tsv.gz"]
+                        },
+                        {
+                            "enable": True,
                             "type": "local",
                             'root': "%(enrich_data_dir)s/acme/Lending/shared",
                             "files": ["pq", "sqlite",

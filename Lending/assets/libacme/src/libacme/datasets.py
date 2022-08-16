@@ -45,7 +45,7 @@ for name,desc, localpath, s3path in [
         "subsets": [
             {
                 "name": "Data",
-                "pattern": ".*" + os.path.basename(path) + "$"
+                "pattern": ".*" + os.path.basename(s3path) + "$"
             }
         ]
     })
