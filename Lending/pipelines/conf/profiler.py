@@ -36,6 +36,7 @@ config = {
                 "transform": "DatasetProfileBuilder",
                 "enable": True,
                 "args": {
+                    "cred": "demouser",
                     "indexdb": "%(data_root)s/shared/audit/index.sqlite",
                     "target":  "%(data_root)s/shared/marketplace/datasetprofiles.pickle",
                     "extra": {
