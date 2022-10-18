@@ -40,6 +40,7 @@ d = DynamicCustomDataset({
     },
     "subsets": [
         {
+            # Resolve one name for each of the files
             "name": lambda obj, params: obj.get_name(params),
         }
     ]

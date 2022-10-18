@@ -170,8 +170,8 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
 
                         # Is the subset dynamic, can we make it
                         # context dependent?
-                        if callable(name):
-                            name = name(dataset, params={'filename': path})
+                        name = dataset.resolve_subset_name(name,
+                                                           params={'filename': path })
                         if name in specs:
                             continue
                         if dataset.in_subset(name, { 'filename': path }):
@@ -248,9 +248,7 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
 
                     # Is the subset dynamic, can we make it
                     # context dependent?
-                    if callable(name):
-                        name = name(dataset, params={'filename': path})
-
+                    name = dataset.resolve_subset_name(name, params=content)
                     if name in specs:
                         continue
 
