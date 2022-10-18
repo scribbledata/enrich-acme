@@ -264,7 +264,8 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
                         specs[name] = content
                         break
 
-                if len(specs) == len(subsets):
+                if ((len(specs) == len(subsets)) and
+                    (not isinstance(dataset, DynamicCustomDataset))):
                     break
 
         if len(specs) > 0:
