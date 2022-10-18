@@ -222,11 +222,17 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
             except:
                 continue
 
+            if source == 's3':
+                uri = "s3://"  + path
+            else:
+                uri = "file://" + path
+
             # Construct the model base don the metadata and the profile
             content = {
+                'source': source,
                 'description': description,
                 'sample': sample,
-                'filename': path,
+                'filename': uri,
                 'metadata': metadata,
                 'df': df,
                 'profile': True,
