@@ -14,6 +14,8 @@ import pandas as pd
 from sqlalchemy import create_engine
 from urllib.parse import quote_plus as urlquote
 
+from enrichsdk.utils import SafeEncoder
+
 from sqlalchemy.engine.reflection import Inspector
 from libacme.datasets import get_datasets as lib_get_datasets
 
@@ -143,7 +145,7 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
             logger.debug("{}: Found {} subsets".format(dataset, len(subsets)),
                          extra={
                              'transform': self.name,
-                             'data': ", ".join(subsets)
+                             'data': json.dumps(subsets, cls=SafeEncoder)
                          })
 
         local_enrich_data_dir = os.path.join(os.environ['ENRICH_ROOT'], 'data')
@@ -165,10 +167,15 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
                 skip = True
                 if len(subsets) > 0:
                     for name in subsets:
+
+                        # Is the subset dynamic, can we make it
+                        # context dependent?
+                        if callable(name):
+                            name = name(dataset, params={'filename': path})
                         if name in specs:
                             continue
                         if dataset.in_subset(name, { 'filename': path }):
-                            skip =False
+                            skip = False
                             break
 
                 if skip:
@@ -199,6 +206,7 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
                         os.unlink(localfile.name)
                 else:
                     continue
+
 
             if sample is None:
                 continue
@@ -237,6 +245,12 @@ class MyDatasetProfileBuilder(DatasetProfileBase, S3Mixin):
             else:
                 # Multiple tables are part of the same dataset.
                 for name in subsets:
+
+                    # Is the subset dynamic, can we make it
+                    # context dependent?
+                    if callable(name):
+                        name = name(dataset, params={'filename': path})
+
                     if name in specs:
                         continue
 

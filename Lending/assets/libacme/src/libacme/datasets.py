@@ -7,7 +7,7 @@ import random
 from datetime import datetime, timedelta
 
 from enrichsdk.datasets.discover import Dataset, DatabaseTable, \
-           DatasetRegistry
+           DatasetRegistry, DynamicCustomDataset
 
 def obfuscate(s):
     """
@@ -24,35 +24,27 @@ datasets = []
 ############################################
 # Custom Datasets
 ############################################
-for name,desc, localpath, s3path in [
-        ("Cars", "Cars", "%(enrich_data_dir)s/scribble/Contrib/shared/Misc/cars.csv", "scribble-demodata/testdata/Misc/cars.csv"),
-        ("LoanStats", "Loan Stats", "%(enrich_data_dir)s/acme/Lending/shared/datasets/LoanStats3a.csv", "scribble-demodata/testdata/Lending/LoanStats3a.csv")
-]:
-    d = Dataset({
-        "name": name,
-        "description": desc,
-        "paths": [
-            {
-                "nature": "s3",
-                "name": "default",
-                "path": os.path.dirname(s3path),
-            },
-        ],
-        "match": {
-            "generate": lambda start, end: [{ 'timestamp': '.', 'name': '.' }],
-            "pattern": "*"
-        },
-        "subsets": [
-            {
-                "name": "Data",
-                "filename": os.path.basename(s3path),
-                "pattern": ".*" + os.path.basename(s3path) + "$"
-            }
-        ]
-    })
-    datasets.append(d)
-
-
+d = DynamicCustomDataset({
+    "name": "Custom",
+    "description": "Custom dataset", 
+    "paths": [
+        {
+            "nature": "s3",
+            "name": "lending",
+            "path": "scribble-demodata/testdata"
+        }
+    ],
+    "match": {
+        "generate": lambda start, end: [{ 'timestamp': '.', 'name': '.' }],
+        "pattern": "*"
+    },
+    "subsets": [
+        {
+            "name": lambda obj, params: obj.get_name(params),
+        }
+    ]
+})
+datasets.append(d)
 
 def get_datasets(names=None):
 
