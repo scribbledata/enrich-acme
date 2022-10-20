@@ -4,7 +4,7 @@ def get_today():
     return datetime.now().date().isoformat()
 
 config = {
-    "name": "DatasetProfile",
+    "name": "DatasetProfiler",
     "description": "Build marketplace profiles from dataset spec",
     "customer_root": "%(enrich_run_root)s/customers/acme/Lending",
     "data_root": "%(enrich_data_dir)s/acme/Lending",

@@ -49,7 +49,7 @@ class MyAcmeIndexer(IndexerBase):
 
         # Ignore all the standard files
         for name in ['_status', '_test', '_commands']:
-            if name in path:
+            if name in path.split("/"):
                 return False
 
         basename = os.path.basename(path)
