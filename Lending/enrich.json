@@ -19,7 +19,8 @@
 	{
 	    "name": "Lending Dashboard",
 	    "description": "Lending Dashboard",
-	    "url": "lendingcore:control:index"
+	    "url": "lendingcore:control:index",
+	    "icon": "grid-icon-11"
 	}
     ],
     "installed_apps": [
