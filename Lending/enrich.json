@@ -16,13 +16,5 @@
 	"lendingcore.apps.LendingConfig"
     ],
     "applications":[
-	{
-	    "name": "Lending Dashboard",
-	    "description": "Lending Dashboard",
-	    "url": "lendingcore:control:index"
-	}
-    ],
-    "installed_apps": [
-	"lendingcore.apps.LendingConfig"
-     ]
+    ]
 }
